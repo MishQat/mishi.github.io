@@ -6,7 +6,7 @@
 }
 
 body {
-  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: 'Inter', sans-serif;
   color: #1f1f1f;
 }
 
@@ -15,14 +15,14 @@ body {
   min-height: 100vh;
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: space-evenly;
 
   padding: 4rem 8rem;
 
   background: linear-gradient(
     135deg,
-    #e0f2ff,   /* soft azure */
-    #ffd6e8    /* baby pink */
+    #4e91e9d3,   
+    #9A134C    
   );
 }
 .hero-text {
@@ -48,14 +48,14 @@ body {
   color: #333;
 }
 .hero-image img {
-  width: 320px;
-  height: 320px;
+  width: 600px;
+  height: 400px;
   object-fit: cover;
 
   border-radius: 20px;
-  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 20px 40px rgba(119, 54, 11, 0.89);
 }
-@media (max-width: 900px) {
+@media (max-width: 900px) { 
   .hero {
     flex-direction: column;
     text-align: center;
