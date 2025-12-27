@@ -8,6 +8,7 @@
 body {
   font-family: 'Inter', sans-serif;
   color: #1f1f1f;
+    background: linear-gradient(135deg, #e0f2ff, #ffd6e8);
 }
 
 /* HERO SECTION */
@@ -18,12 +19,6 @@ body {
   justify-content: space-evenly;
 
   padding: 4rem 8rem;
-
-  background: linear-gradient(
-    135deg,
-    #4e91e9d3,   
-    #9A134C    
-  );
 }
 .hero-text {
   max-width: 500px;
@@ -55,6 +50,52 @@ body {
   border-radius: 20px;
   box-shadow: 0 20px 40px rgba(119, 54, 11, 0.89);
 }
+/* Projects Section */
+.projects {
+  padding: 6rem 8rem;
+  text-align: center;
+}
+
+.projects h2 {
+  font-size: 2.5rem;
+  margin-bottom: 3rem;
+}
+
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2.5rem;
+}
+
+.project-card {
+  background: white;
+  border-radius: 15px;
+  box-shadow: 0 15px 30px rgba(0,0,0,0.1);
+  padding: 1.5rem;
+  transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.project-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 25px 50px rgba(0,0,0,0.15);
+}
+
+.project-card img {
+  width: 100%;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+}
+
+.project-card h3 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.project-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
 @media (max-width: 900px) { 
   .hero {
     flex-direction: column;
@@ -65,4 +106,5 @@ body {
   .hero-image {
     margin-top: 2rem;
   }
+  
 }
