@@ -1,4 +1,3 @@
-<link rel="stylesheet" href="css/style.css">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -6,9 +5,8 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
-
+    <link rel="stylesheet" href="css/style.css">
 </head>
-
 <body>
 <section class="hero">
   <div class="hero-text">
@@ -51,13 +49,13 @@
     <!-- Add more projects -->
   </div>
 </section>
-<div id="project2" class="modal">
-  <a href="#" class="modal-backdrop"></a>
+<div id="project2" class="modal" role="dialog" aria-modal="true" aria-labelledby="project2-title">
+  <a href="#" class="modal-backdrop" aria-hidden="true"></a>
 
-  <div class="modal-content">
-    <a href="#" class="close">&times;</a>
+  <div class="modal-content" role="document" style="max-height:80vh; overflow-y:auto;">
+    <a href="#" class="close" aria-label="Close">&times;</a>
 
-    <h1>DMT Gravity-Propelled Car</h1>
+    <h1 id="project2-title">DMT Gravity-Propelled Car</h1>
     <p class="project-subtitle">
       Mechanical Engineering • Design, Manufacture & Test
     </p>
@@ -115,10 +113,36 @@
       structural integrity and manufacturability.
     </p>
 
-    <p class="coming-soon">
-      Files, drawings, and CAD models will be displayed here.
-    </p>
+    <h2>Interactive 3D Models</h2>
+
+    <div class="stl-section">
+      <h3>Main Structural Component</h3>
+      <p class="stl-caption">
+        Plywood chassis modelled in CAD and used as the primary mounting
+        structure for all drivetrain and support components.
+      </p>
+
+      <div class="stl-viewer" id="chassis-viewer" data-stl="assets/stl/chassis.stl">
+        <div class="stl-ui-hint">
+          <span>🖱️ Drag to rotate</span>
+          <span>🔍 Scroll to zoom</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="stl-section">
+      <h3>Full Vehicle Assembly</h3>
+      <p class="stl-caption">
+        Complete vehicle assembly integrating standard bearings, fasteners,
+        shafts, and drivetrain components.
+      </p>
+
+      <div class="stl-viewer" id="assembly-viewer" data-stl="assets/stl/assembly.stl"></div>
+    </div>
 
   </div>
+  
 </div>
+<script type="module" src="assets/js/stl-viewer.js"></script>
 </body>
+</html>

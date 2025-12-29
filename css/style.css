@@ -156,11 +156,75 @@ body {
 
 
 
-.coming-soon {
-  margin-top: 2rem;
-  font-style: italic;
-  color: #888;
+.stl-section {
+  margin-top: 3rem;
 }
+
+.stl-caption {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+/* The viewer container */
+.stl-viewer {
+  width: 100%;
+  height: 400px;
+
+  background: linear-gradient(135deg, #f5f7fa, #e4ebf5);
+  border-radius: 16px;
+
+  box-shadow:
+    inset 0 0 0 1px rgba(0,0,0,0.05),
+    0 20px 40px rgba(0,0,0,0.1);
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  position: relative;
+  overflow: hidden;
+}
+.stl-placeholder {
+  font-family: monospace;
+  color: #777;
+  font-size: 0.9rem;
+}
+.stl-ui-hint {
+  position: absolute;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  display: flex;
+  gap: 1rem;
+
+  padding: 0.6rem 1rem;
+  background: rgba(255, 255, 255, 0.75);
+  backdrop-filter: blur(6px);
+
+  border-radius: 999px;
+  font-size: 0.85rem;
+  color: #444;
+
+  box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+  pointer-events: none;
+
+  /* subtle by default, smooth transition with a short delay so hover-out reduction is gentle */
+  opacity: 1;
+  transition: opacity 600ms cubic-bezier(.2,.8,.2,1) 120ms;
+}
+
+.stl-viewer:hover .stl-ui-hint {
+  /* show immediately on hover */
+  opacity: 0.2;
+  transition-delay: 0.15s;
+}
+.stl-viewer:hover .stl-ui-hint {
+  transition-delay: 0.5;
+  opacity: 0.2;
+}
+
 
 
 @media (max-width: 900px) { 
@@ -173,5 +237,11 @@ body {
   .hero-image {
     margin-top: 2rem;
   }
+@media (max-width: 768px) {
+  .stl-viewer {
+    height: 280px;
+  }
+}
+
   
 }
