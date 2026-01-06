@@ -1,0 +1,207 @@
+{
+    "asset": {
+        "generator": "SOLIDWORKSGLTF",
+        "version": "2.0"
+    },
+    "scene": 0,
+    "scenes": [
+        {
+            "name": "Default",
+            "nodes": [
+                0,
+                1
+            ]
+        }
+    ],
+    "nodes": [
+        {
+            "matrix": [
+                0.8235590575910198,
+                -0.19004497617610178,
+                0.534446803423892,
+                0.0,
+                0.5622578888188259,
+                0.14902057581230013,
+                -0.8134242032577881,
+                0.0,
+                0.07494361294191935,
+                0.9703998016357976,
+                0.22958153206304802,
+                0.0,
+                0.12337022945808251,
+                1.596349169316808,
+                0.2532162004829993,
+                1.0
+            ],
+            "camera": 0,
+            "name": "current camera"
+        },
+        {
+            "mesh": 0,
+            "name": "Chassis"
+        }
+    ],
+    "cameras": [
+        {
+            "type": "orthographic",
+            "orthographic": {
+                "xmag": 0.38859591057722304,
+                "ymag": 0.3002786581733087,
+                "zfar": 1.9751007133500833,
+                "znear": 1.4761493987712184
+            }
+        }
+    ],
+    "meshes": [
+        {
+            "primitives": [
+                {
+                    "attributes": {
+                        "POSITION": 1,
+                        "NORMAL": 2,
+                        "TEXCOORD_0": 3
+                    },
+                    "indices": 0,
+                    "material": 0,
+                    "mode": 4
+                }
+            ]
+        }
+    ],
+    "accessors": [
+        {
+            "bufferView": 0,
+            "byteOffset": 0,
+            "componentType": 5125,
+            "count": 4296,
+            "type": "SCALAR",
+            "min": [
+                0
+            ],
+            "max": [
+                1959
+            ]
+        },
+        {
+            "bufferView": 1,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1960,
+            "type": "VEC3",
+            "min": [
+                -0.09172214567661285,
+                -1.734723475976807e-18,
+                -0.26239582896232605
+            ],
+            "max": [
+                0.09227785468101501,
+                0.004999999888241291,
+                0.014668275602161884
+            ]
+        },
+        {
+            "bufferView": 2,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1960,
+            "type": "VEC3",
+            "min": [
+                -1.0,
+                -1.0,
+                -1.0
+            ],
+            "max": [
+                1.0,
+                1.0,
+                1.0
+            ]
+        },
+        {
+            "bufferView": 3,
+            "byteOffset": 0,
+            "componentType": 5126,
+            "count": 1960,
+            "type": "VEC2",
+            "min": [
+                2.245105028152466,
+                2.245105028152466
+            ],
+            "max": [
+                3.071303606033325,
+                3.4891810417175293
+            ]
+        }
+    ],
+    "materials": [
+        {
+            "name": "polishedmaple",
+            "pbrMetallicRoughness": {
+                "baseColorTexture": {
+                    "index": 0
+                },
+                "baseColorFactor": [
+                    1.0,
+                    1.0,
+                    1.0,
+                    1.0
+                ],
+                "metallicFactor": 0.0,
+                "roughnessFactor": 0.1899999998509884
+            }
+        }
+    ],
+    "textures": [
+        {
+            "sampler": 0,
+            "source": 0
+        }
+    ],
+    "images": [
+        {
+            "uri": "polished maple.jpg"
+        }
+    ],
+    "samplers": [
+        {
+            "magFilter": 9729,
+            "minFilter": 9729,
+            "wrapS": 10497,
+            "wrapT": 10497
+        }
+    ],
+    "bufferViews": [
+        {
+            "buffer": 0,
+            "byteOffset": 0,
+            "byteLength": 17184,
+            "target": 34963
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 17184,
+            "byteLength": 23520,
+            "byteStride": 12,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 40704,
+            "byteLength": 23520,
+            "byteStride": 12,
+            "target": 34962
+        },
+        {
+            "buffer": 0,
+            "byteOffset": 64224,
+            "byteLength": 15680,
+            "byteStride": 8,
+            "target": 34962
+        }
+    ],
+    "buffers": [
+        {
+            "uri": "Chassis.bin",
+            "byteLength": 79904
+        }
+    ]
+}

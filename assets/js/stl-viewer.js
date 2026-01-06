@@ -1,6 +1,7 @@
 import * as THREE from 'https://unpkg.com/three@0.158.0/build/three.module.js';
 import { OrbitControls } from 'https://unpkg.com/three@0.158.0/examples/jsm/controls/OrbitControls.js';
 import { STLLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/STLLoader.js';
+import { GLTFLoader } from 'https://unpkg.com/three@0.158.0/examples/jsm/loaders/GLTFLoader.js';
 
 
 // quick module startup log
@@ -19,8 +20,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		const stlFromData = container.dataset.stl;
 		// fallback: map known ids to defaults (keeps previous behaviour)
 		const fallbackMap = {
-			'chassis-viewer': 'assets/stl/chassis.stl',
-			'assembly-viewer': 'assets/stl/assembly.stl'
+			'chassis-viewer': 'assets/stl/chassis.gltf',
+			'assembly-viewer': 'assets/stl/assembly.gltf'
 		};
 		const stlPath = stlFromData || fallbackMap[container.id];
 
@@ -84,50 +85,105 @@ function initViewer(container, stlPath) {
 	directionalLight.position.set(50, 100, 50);
 	scene.add(directionalLight);
 
-	// Load STL
-	const loader = new STLLoader();
-	loader.load(
-		stlPath,
-		geometry => {
-			const material = new THREE.MeshStandardMaterial({
-				color: 0xcccccc,
-				metalness: 0.1,
-				roughness: 0.6
-			});
+	// Load model (STL or GLTF/GLB)
+	const ext = (stlPath.split('.').pop() || '').toLowerCase();
+	if (ext === 'stl') {
+		const loader = new STLLoader();
+		loader.load(
+			stlPath,
+			geometry => {
+				const material = new THREE.MeshStandardMaterial({
+					color: 0xcccccc,
+					metalness: 0.1,
+					roughness: 0.6
+				});
 
-			geometry.center();
-			const mesh = new THREE.Mesh(geometry, material);
-			mesh.rotation.x = -Math.PI / 2;
-			scene.add(mesh);
+				geometry.center();
+				const mesh = new THREE.Mesh(geometry, material);
+				mesh.rotation.x = -Math.PI / 2;
+				scene.add(mesh);
 
-			// Fit camera to object bounds
-			if (geometry.boundingBox === null) geometry.computeBoundingBox();
-			const bbox = geometry.boundingBox;
-			const size = new THREE.Vector3();
-			bbox.getSize(size);
-			const maxDim = Math.max(size.x, size.y, size.z, 1);
-			const fov = camera.fov * (Math.PI / 180);
-			const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
-			camera.position.set(0, maxDim, cameraZ * 1.4);
-			camera.lookAt(0, 0, 0);
-			controls.update();
-			onResize(); // ensure final sizing after object loaded
-		},
-		// progress
-		xhr => {
-			if (xhr && xhr.lengthComputable) {
-				const pct = Math.round((xhr.loaded / xhr.total) * 100);
-				console.debug(`STL loader (${stlPath}): ${pct}%`);
+				// Fit camera to object bounds
+				if (geometry.boundingBox === null) geometry.computeBoundingBox();
+				const bbox = geometry.boundingBox;
+				const size = new THREE.Vector3();
+				bbox.getSize(size);
+				const maxDim = Math.max(size.x, size.y, size.z, 1);
+				const fov = camera.fov * (Math.PI / 180);
+				const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+				camera.position.set(0, maxDim, cameraZ * 1.4);
+				camera.lookAt(0, 0, 0);
+				controls.update();
+				onResize(); // ensure final sizing after object loaded
+			},
+			// progress
+			xhr => {
+				if (xhr && xhr.lengthComputable) {
+					const pct = Math.round((xhr.loaded / xhr.total) * 100);
+					console.debug(`STL loader (${stlPath}): ${pct}%`);
+				}
+			},
+			err => {
+				console.error(`STLLoader error for ${stlPath}:`, err);
+				// Helpful hint for CORS / 404s
+				if (err && err.target && err.target.status === 404) {
+					console.error(`File not found: ${stlPath} (404). Verify path and presence in repository.`);
+				}
 			}
-		},
-		err => {
-			console.error(`STLLoader error for ${stlPath}:`, err);
-			// Helpful hint for CORS / 404s
-			if (err && err.target && err.target.status === 404) {
-				console.error(`File not found: ${stlPath} (404). Verify path and presence in repository.`);
+		);
+	} else if (ext === 'gltf' || ext === 'glb') {
+		const loader = new GLTFLoader();
+		loader.load(
+			stlPath,
+			gltf => {
+				const model = gltf.scene || (gltf.scenes && gltf.scenes[0]);
+				if (!model) {
+					console.error(`GLTFLoader: no scene found in ${stlPath}`);
+					return;
+				}
+
+				// Ensure meshes cast/receive shadows and keep their materials
+				model.traverse(node => {
+					if (node.isMesh) {
+						node.castShadow = true;
+						node.receiveShadow = true;
+					}
+				});
+
+				// Center model at origin using bounding box
+				const bbox = new THREE.Box3().setFromObject(model);
+				const size = new THREE.Vector3();
+				bbox.getSize(size);
+				const center = new THREE.Vector3();
+				bbox.getCenter(center);
+				model.position.sub(center);
+				scene.add(model);
+
+				const maxDim = Math.max(size.x, size.y, size.z, 1);
+				const fov = camera.fov * (Math.PI / 180);
+				const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+				camera.position.set(0, maxDim, cameraZ * 1.4);
+				camera.lookAt(0, 0, 0);
+				controls.update();
+				onResize();
+			},
+			// progress
+			xhr => {
+				if (xhr && xhr.lengthComputable) {
+					const pct = Math.round((xhr.loaded / xhr.total) * 100);
+					console.debug(`GLTF loader (${stlPath}): ${pct}%`);
+				}
+			},
+			err => {
+				console.error(`GLTFLoader error for ${stlPath}:`, err);
+				if (err && err.target && err.target.status === 404) {
+					console.error(`File not found: ${stlPath} (404). Verify path and presence in repository.`);
+				}
 			}
-		}
-	);
+		);
+	} else {
+		console.error(`Model format not supported for ${stlPath}. Supported: .stl, .gltf, .glb`);
+	}
 
 	// Handle sizing robustly
 	function onResize() {
