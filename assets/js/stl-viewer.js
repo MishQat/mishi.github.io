@@ -34,6 +34,18 @@ document.addEventListener('DOMContentLoaded', () => {
 		initViewer(container, stlPath);
 	});
 });
+async function loadCode() {
+  const el = document.getElementById("py-code");
+  if (!el) return;
+
+  const res = await fetch("assets/code/dmt_velocity_model.py");
+  el.textContent = await res.text();
+  Prism.highlightElement(el);
+
+}
+
+loadCode();
+
 
 function initViewer(container, stlPath) {
 	// defensive checks
