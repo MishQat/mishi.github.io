@@ -40,6 +40,57 @@
       <img src="assets/images/me.jpg" alt="Portrait of Mishqat">
     </div>
   </section>
+  <section class="pro-tabs">
+  <div class="tab-row" role="tablist" aria-label="Professional links">
+    <button class="tab-btn is-active" role="tab" aria-selected="true" data-tab="cv">
+      CV
+    </button>
+    <button class="tab-btn" role="tab" aria-selected="false" data-tab="linkedin">
+      LinkedIn
+    </button>
+  </div>
+
+  <div class="tab-panels">
+    <!-- CV panel -->
+    <div class="tab-panel is-active" data-panel="cv" role="tabpanel">
+      <p class="tab-lead">
+        A one-page snapshot of my engineering work, tools, and key projects.
+      </p>
+
+      <div class="tab-actions">
+        <a class="pill primary" href="#cv-modal">Open CV (PDF)</a>
+        <a class="pill ghost" href="assets/cv/CV.pdf" target="_blank" rel="noopener">
+          Open in new tab
+        </a>
+      </div>
+
+      <p class="tab-fine">
+        Tip: the PDF opens inside this site for quick viewing.
+      </p>
+    </div>
+
+    <!-- LinkedIn panel -->
+    <div class="tab-panel" data-panel="linkedin" role="tabpanel">
+      <p class="tab-lead">
+        Posts, project highlights, and quick context around what I’ve been building.
+      </p>
+
+      <div class="tab-actions">
+        <a class="pill primary" href="https://www.linkedin.com/in/ahmedmishqat/" target="_blank" rel="noopener">
+          View LinkedIn Profile
+        </a>
+        <a class="pill ghost" href="https://www.linkedin.com/in/ahmedmishqat/" target="_blank" rel="noopener">
+          Featured Post
+        </a>
+      </div>
+
+      <p class="tab-fine">
+        I use LinkedIn for Aura.
+      </p>
+    </div>
+  </div>
+</section>
+
 
   <section class="projects">
     <h2>Selected Projects</h2>
@@ -70,7 +121,7 @@
         </p>
       </a>
 
-      <!-- Example modal/demo project: copy this anchor and the modal block below to add more projects -->
+      <!-- Project 4 -->  
       <a href="#project4" class="project-card">
         <img src="assets/images/project4.jpg" alt="Project4">
         <h3>Hack-A-Bot: Toxic Waste Disposal Rover Challenge</h3>
@@ -80,6 +131,30 @@
       <!-- Add more projects -->
     </div>
   </section>
+  <!-- Modals for PDF and LinkedIn -->
+   <div id="cv-modal" class="modal">
+  <a href="#" class="modal-backdrop" aria-label="Close"></a>
+
+  <div class="modal-content cv-modal">
+    <a href="#" class="close" aria-label="Close">&times;</a>
+
+    <h1 class="cv-title">Curriculum Vitae</h1>
+
+    <!-- Best overall embed for browsers -->
+    <iframe
+      class="cv-frame"
+      src="assets/cv/CV.pdf"
+      title="Curriculum Vitae"
+      loading="lazy">
+    </iframe>
+
+    <div class="cv-actions">
+      <a class="pill ghost" href="assets/cv/CV.pdf" target="_blank" rel="noopener">Open in new tab</a>
+      <a class="pill primary" href="assets/cv/CV.pdf" download>Download</a>
+    </div>
+  </div>
+</div>
+
   <!-- PROJECT: Autonomous Poker Dealer (CV + Robotics) -->
   <div id="project1" class="modal" role="dialog" aria-modal="true" aria-labelledby="project1-title">
     <a href="#" class="modal-backdrop" aria-hidden="true"></a>
@@ -564,6 +639,27 @@
       </div>
     </div>
   </div>
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const buttons = document.querySelectorAll(".tab-btn");
+    const panels = document.querySelectorAll(".tab-panel");
+
+    buttons.forEach(btn => {
+      btn.addEventListener("click", () => {
+        const target = btn.dataset.tab;
+
+        buttons.forEach(b => {
+          const active = b === btn;
+          b.classList.toggle("is-active", active);
+          b.setAttribute("aria-selected", active ? "true" : "false");
+        });
+
+        panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === target));
+      });
+    });
+  });
+</script>
+
 
   <script type="module" src="assets/js/stl-viewer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>

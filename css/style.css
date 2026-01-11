@@ -410,6 +410,137 @@ body {
   color: #2563eb;
 }
 
+/* --- Tabs block (between hero and projects) --- */
+.pro-tabs {
+  max-width: 1100px;
+  margin: 2rem auto 3rem;
+  padding: 0 1.25rem;
+}
+
+.tab-row {
+  display: flex;
+  gap: 0.9rem;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.tab-btn {
+  border: 0;
+  cursor: pointer;
+  padding: 0.85rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 700;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10), 0 12px 28px rgba(0,0,0,0.08);
+
+  transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.tab-btn:hover {
+  transform: scale(1.1);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), 0 18px 40px rgba(0,0,0,0.12);
+}
+
+.tab-btn.is-active {
+  border: 0;
+  cursor: pointer;
+  padding: 1rem 1.4rem;
+  border-radius: 999px;
+  font-weight: 900;
+  background: rgba(231, 53, 202, 0.85);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.12), 0 18px 40px rgba(0,0,0,0.12);
+}
+
+.tab-panels {
+  display: grid;
+  place-items: center;
+}
+
+.tab-panel {
+  width: min(900px, 100%);
+  display: none;
+  padding: 1.25rem 1.25rem;
+  border-radius: 18px;
+  background: rgba(255, 255, 255, 0.55);
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08), 0 18px 45px rgba(0,0,0,0.10);
+}
+
+.tab-panel.is-active {
+  display: block;
+}
+
+.tab-lead {
+  margin: 0 0 1rem;
+  text-align: center;
+  color: #2b2b2b;
+  line-height: 1.5;
+}
+
+.tab-actions {
+  display: flex;
+  gap: 0.8rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 0.75rem;
+}
+
+.tab-fine {
+  margin: 0;
+  text-align: center;
+  color: #555;
+  font-size: 0.95rem;
+}
+
+/* Pills (reuse elsewhere if you want) */
+.pill {
+  display: inline-block;
+  text-decoration: none;
+  font-weight: 700;
+  padding: 0.75rem 1.15rem;
+  border-radius: 999px;
+  transition: transform 220ms ease, box-shadow 220ms ease, background 220ms ease;
+}
+
+.pill:hover { transform: scale(1.03); }
+
+.pill.primary {
+  background: rgba(37, 99, 235, 0.95);
+  color: white;
+  box-shadow: 0 16px 34px rgba(37, 99, 235, 0.25);
+}
+
+.pill.ghost {
+  background: rgba(255, 255, 255, 0.75);
+  color: #111;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10), 0 14px 30px rgba(0,0,0,0.08);
+}
+
+.cv-modal {
+  max-width: 980px;
+}
+
+.cv-title {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+/* Single-page viewer look */
+.cv-frame {
+  width: 100%;
+  height: 78vh;         /* adjust if you want it shorter */
+  border: 0;
+  border-radius: 14px;
+  background: white;
+  box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08);
+}
+
+.cv-actions {
+  display: flex;
+  gap: 0.8rem;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 1rem;
+}
 
 
 
