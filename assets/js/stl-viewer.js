@@ -21,7 +21,8 @@ document.addEventListener('DOMContentLoaded', () => {
 		// fallback: map known ids to defaults (keeps previous behaviour)
 		const fallbackMap = {
 			'chassis-viewer': 'assets/stl/chassis.gltf',
-			'assembly-viewer': 'assets/stl/assembly.gltf'
+			'assembly-viewer': 'assets/stl/assembly.gltf',
+			'd2assembly-viewer': 'assets/stl/D2FULLAssem.stl'
 		};
 		const stlPath = stlFromData || fallbackMap[container.id];
 
@@ -114,7 +115,16 @@ function initViewer(container, stlPath) {
 				const mesh = new THREE.Mesh(geometry, material);
 				mesh.rotation.x = -Math.PI / 2;
 				scene.add(mesh);
-
+			// Ensure camera.far covers very large models (use bounding sphere)
+			const objBbox = new THREE.Box3().setFromObject(mesh);
+			const sphere = objBbox.getBoundingSphere(new THREE.Sphere());
+			const radius = Math.max(sphere.radius, 1);
+			const newFar = Math.max(camera.far, radius * 20, 5000);
+			if (camera.far < newFar) {
+				camera.far = newFar;
+				camera.updateProjectionMatrix();
+				console.info(`STL viewer: raised camera.far to ${camera.far.toFixed(0)} (radius ${radius.toFixed(1)})`);
+			}
 				// Fit camera to object bounds
 				if (geometry.boundingBox === null) geometry.computeBoundingBox();
 				const bbox = geometry.boundingBox;
@@ -126,6 +136,12 @@ function initViewer(container, stlPath) {
 				camera.position.set(0, maxDim, cameraZ * 1.4);
 				camera.lookAt(0, 0, 0);
 				controls.update();
+			// Special-case: if this is the D2 assembly, start the camera farther away to avoid starting inside the model
+			if (container.id === 'd2assembly-viewer' || /D2FULLAssem/i.test(stlPath)) {
+				console.info('STL viewer: applying D2 extra camera distance');
+				camera.position.set(camera.position.x * 0.3, camera.position.y * 0.3, camera.position.z * 0.3);
+				controls.update();
+			}
 				onResize(); // ensure final sizing after object loaded
 			},
 			// progress
@@ -171,13 +187,27 @@ function initViewer(container, stlPath) {
 				model.position.sub(center);
 				scene.add(model);
 
-				const maxDim = Math.max(size.x, size.y, size.z, 1);
+			// Ensure camera.far covers very large models (use bounding sphere)
+			const objBbox = new THREE.Box3().setFromObject(model);
+			const sphere = objBbox.getBoundingSphere(new THREE.Sphere());
+			const radius = Math.max(sphere.radius, 1);
+			const newFar = Math.max(camera.far, radius * 20, 5000);
+			if (camera.far < newFar) {
+				camera.far = newFar;
+				camera.updateProjectionMatrix();
+				console.info(`GLTF viewer: raised camera.far to ${camera.far.toFixed(0)} (radius ${radius.toFixed(1)})`);
+			}
 				const fov = camera.fov * (Math.PI / 180);
 				const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
 				camera.position.set(0, maxDim, cameraZ * 1.4);
 				camera.lookAt(0, 0, 0);
 				controls.update();
-				onResize();
+			// Special-case: if this is the D2 assembly, start the camera farther away to avoid starting inside the model
+			if (container.id === 'd2assembly-viewer' || /D2FULLAssem/i.test(stlPath)) {
+				console.info('GLTF viewer: applying D2 extra camera distance');
+				camera.position.set(camera.position.x * 0.15, camera.position.y * 0.15, camera.position.z * 0.15);
+				controls.update();
+			}				onResize();
 			},
 			// progress
 			xhr => {
