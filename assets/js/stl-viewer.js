@@ -197,25 +197,42 @@ function initViewer(container, stlPath) {
 				camera.updateProjectionMatrix();
 				console.info(`GLTF viewer: raised camera.far to ${camera.far.toFixed(0)} (radius ${radius.toFixed(1)})`);
 			}
-				const fov = camera.fov * (Math.PI / 180);
-				const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
-				camera.position.set(0, maxDim, cameraZ * 1.4);
-				camera.lookAt(0, 0, 0);
-				controls.update();
+			const maxDim = Math.max(size.x, size.y, size.z, 1);
+			const fov = camera.fov * (Math.PI / 180);
+			const cameraZ = Math.abs(maxDim / 2 / Math.tan(fov / 2));
+			camera.position.set(0, maxDim, cameraZ * 1.4);
+			camera.lookAt(0, 0, 0);
+			controls.update();
+
 			// Special-case: if this is the D2 assembly, start the camera farther away to avoid starting inside the model
 			if (container.id === 'd2assembly-viewer' || /D2FULLAssem/i.test(stlPath)) {
 				console.info('GLTF viewer: applying D2 extra camera distance');
-				camera.position.set(camera.position.x * 0.15, camera.position.y * 0.15, camera.position.z * 0.15);
+				camera.position.set(camera.position.x * 3, camera.position.y * 3, camera.position.z * 3);
 				controls.update();
-			}				onResize();
-			},
-			// progress
-			xhr => {
-				if (xhr && xhr.lengthComputable) {
-					const pct = Math.round((xhr.loaded / xhr.total) * 100);
-					console.debug(`GLTF loader (${stlPath}): ${pct}%`);
-				}
-			},
+			}
+
+			// close-in adjustment for chassis/assembly GLTFs (keeps D2 untouched)
+			if ((container.id === 'chassis-viewer' || container.id === 'assembly-viewer' || /chassis\.gltf/i.test(stlPath) || /assembly\.gltf/i.test(stlPath)) && container.id !== 'd2assembly-viewer' && !/D2FULLAssem/i.test(stlPath)) {
+				console.info('GLTF viewer: applying close camera adjustment for chassis/assembly');
+				// Compute a stable close camera position based on the model's bounding sphere and max dimension.
+				const closeDistance = Math.max(radius * 1.8, 10);
+				camera.position.set(0, Math.max(maxDim * 0.8, radius * 1.0), closeDistance);
+				camera.position.multiplyScalar(0.1);
+				camera.lookAt(0, 0, 0);
+				controls.update();
+				console.info(`GLTF viewer: camera set to ${camera.position.x.toFixed(1)}, ${camera.position.y.toFixed(1)}, ${camera.position.z.toFixed(1)}`);
+			}
+
+			onResize();
+			hideLoader(loader);
+		},
+		// progress
+		xhr => {
+			if (xhr && xhr.lengthComputable) {
+				const pct = Math.round((xhr.loaded / xhr.total) * 100);
+				console.debug(`GLTF loader (${stlPath}): ${pct}%`);
+			}
+		},
 			err => {
 				console.error(`GLTFLoader error for ${stlPath}:`, err);
 				if (err && err.target && err.target.status === 404) {
