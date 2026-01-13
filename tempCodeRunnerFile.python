@@ -1,0 +1,10 @@
+def digital_root(n):
+    
+    while n > 9: #main outer loop
+        digit_sum = 0
+        while n > 0:
+            digit = n % 10 # gets the last digit
+            digit_sum = digit_sum + digit 
+            n //= 10 # removes the last digit and carries on
+        n = digit_sum # as n is changed, we use 'digit_sum' as a whiteboard, cleaning it after each use
+    print(n)
