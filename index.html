@@ -41,55 +41,55 @@
     </div>
   </section>
   <section class="pro-tabs">
-  <div class="tab-row" role="tablist" aria-label="Professional links">
-    <button class="tab-btn is-active" role="tab" aria-selected="true" data-tab="cv">
-      CV
-    </button>
-    <button class="tab-btn" role="tab" aria-selected="false" data-tab="linkedin">
-      LinkedIn
-    </button>
-  </div>
-
-  <div class="tab-panels">
-    <!-- CV panel -->
-    <div class="tab-panel is-active" data-panel="cv" role="tabpanel">
-      <p class="tab-lead">
-        A one-page snapshot of my engineering work, tools, and key projects.
-      </p>
-
-      <div class="tab-actions">
-        <a class="pill primary" href="#cv-modal">Open CV (PDF)</a>
-        <a class="pill ghost" href="assets/cv/CV.pdf" target="_blank" rel="noopener">
-          Open in new tab
-        </a>
-      </div>
-
-      <p class="tab-fine">
-        Tip: the PDF opens inside this site for quick viewing.
-      </p>
+    <div class="tab-row" role="tablist" aria-label="Professional links">
+      <button class="tab-btn is-active" role="tab" aria-selected="true" data-tab="cv">
+        CV
+      </button>
+      <button class="tab-btn" role="tab" aria-selected="false" data-tab="linkedin">
+        LinkedIn
+      </button>
     </div>
 
-    <!-- LinkedIn panel -->
-    <div class="tab-panel" data-panel="linkedin" role="tabpanel">
-      <p class="tab-lead">
-        Posts, project highlights, and quick context around what I’ve been building.
-      </p>
+    <div class="tab-panels">
+      <!-- CV panel -->
+      <div class="tab-panel is-active" data-panel="cv" role="tabpanel">
+        <p class="tab-lead">
+          A one-page snapshot of my engineering work, tools, and key projects.
+        </p>
 
-      <div class="tab-actions">
-        <a class="pill primary" href="https://www.linkedin.com/in/ahmedmishqat/" target="_blank" rel="noopener">
-          View LinkedIn Profile
-        </a>
-        <a class="pill ghost" href="https://www.linkedin.com/in/ahmedmishqat/" target="_blank" rel="noopener">
-          Featured Post
-        </a>
+        <div class="tab-actions">
+          <a class="pill primary" href="#cv-modal">Open CV (PDF)</a>
+          <a class="pill ghost" href="assets/cv/CV.pdf" target="_blank" rel="noopener">
+            Open in new tab
+          </a>
+        </div>
+
+        <p class="tab-fine">
+          Tip: the PDF opens inside this site for quick viewing.
+        </p>
       </div>
 
-      <p class="tab-fine">
-        I use LinkedIn for Aura.
-      </p>
+      <!-- LinkedIn panel -->
+      <div class="tab-panel" data-panel="linkedin" role="tabpanel">
+        <p class="tab-lead">
+          Posts, project highlights, and quick context around what I’ve been building.
+        </p>
+
+        <div class="tab-actions">
+          <a class="pill primary" href="https://www.linkedin.com/in/ahmedmishqat/" target="_blank" rel="noopener">
+            View LinkedIn Profile
+          </a>
+          <a class="pill ghost" href="https://www.linkedin.com/in/ahmedmishqat/" target="_blank" rel="noopener">
+            Featured Post
+          </a>
+        </div>
+
+        <p class="tab-fine">
+          I use LinkedIn for Aura.
+        </p>
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
 
   <section class="projects">
@@ -121,39 +121,41 @@
         </p>
       </a>
 
-      <!-- Project 4 -->  
+      <!-- Project 4 -->
       <a href="#project4" class="project-card">
         <img src="assets/images/project4.jpg" alt="Project4">
         <h3>Hack-A-Bot: Toxic Waste Disposal Rover Challenge</h3>
         <p>24-hour robotics hackathon</p>
+      </a>
+      <!-- Project 5 -->
+      <a href="#project5" class="project-card">
+        <img src="assets/images/project5.jpg" alt="Project5">
+        <h3>Gear-Prix: Drivetrain Design Chanllange</h3>
+        <p>12-hour mechanical engineering competition</p>
       </a>
 
       <!-- Add more projects -->
     </div>
   </section>
   <!-- Modals for PDF and LinkedIn -->
-   <div id="cv-modal" class="modal">
-  <a href="#" class="modal-backdrop" aria-label="Close"></a>
+  <div id="cv-modal" class="modal">
+    <a href="#" class="modal-backdrop" aria-label="Close"></a>
 
-  <div class="modal-content cv-modal">
-    <a href="#" class="close" aria-label="Close">&times;</a>
+    <div class="modal-content cv-modal">
+      <a href="#" class="close" aria-label="Close">&times;</a>
 
-    <h1 class="cv-title">Curriculum Vitae</h1>
+      <h1 class="cv-title">Curriculum Vitae</h1>
 
-    <!-- Best overall embed for browsers -->
-    <iframe
-      class="cv-frame"
-      src="assets/cv/CV.pdf"
-      title="Curriculum Vitae"
-      loading="lazy">
-    </iframe>
+      <!-- Best overall embed for browsers -->
+      <iframe class="cv-frame" src="assets/cv/CV.pdf" title="Curriculum Vitae" loading="lazy">
+      </iframe>
 
-    <div class="cv-actions">
-      <a class="pill ghost" href="assets/cv/CV.pdf" target="_blank" rel="noopener">Open in new tab</a>
-      <a class="pill primary" href="assets/cv/CV.pdf" download>Download</a>
+      <div class="cv-actions">
+        <a class="pill ghost" href="assets/cv/CV.pdf" target="_blank" rel="noopener">Open in new tab</a>
+        <a class="pill primary" href="assets/cv/CV.pdf" download>Download</a>
+      </div>
     </div>
   </div>
-</div>
 
   <!-- PROJECT: Autonomous Poker Dealer (CV + Robotics) -->
   <div id="project1" class="modal" role="dialog" aria-modal="true" aria-labelledby="project1-title">
@@ -256,7 +258,7 @@
           href="https://www.linkedin.com/posts/jalliet_poker-robotics-simulation-ugcPost-7338274076215427073--eU0?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEY3AAQBnmXPHGxHlvWh2pEinbwOvD2dEeo">
           <div class="link-card-title">LinkedIn Reflection</div>
           <div class="link-card-desc">
-            A high-level reflection on what worked, what didn’t, and what I learned from the mismatch
+            A high-level reflection on what worked, what didn’t, and what we learned from the mismatch
             between software success and mechanical failure.
           </div>
           <div class="link-card-cta">See the post →</div>
@@ -545,7 +547,7 @@
       <a href="#" class="close" aria-label="Close">&times;</a>
 
       <div class="modal-header">
-  
+
       </div>
       <h1>24-Hour Robotics Hackathon</h1>
 
@@ -631,26 +633,139 @@
       </div>
     </div>
   </div>
+  <div id="project5" class="modal" role="dialog" aria-modal="true" aria-labelledby="project5-title">
+    <a href="#" class="modal-backdrop" aria-hidden="true"></a>
+
+    <div class="modal-content" role="document">
+      <a href="#" class="close" aria-label="Close">&times;</a>
+
+      <div class="modal-header">
+
+      </div>
+      <h1>Manchester Motorsport Society Gear Prix</h1>
+      <p class="project-subtitle">Drivetrain Design Challenge</p>
+      <img src="assets/images/project5_2.jpg" alt="Gear Prix Car ">
+
+      <p>
+        This project was a time-constrained mechanical engineering competition organised by
+        The University of Manchester Motorsport Society, where teams were tasked with designing,
+        building, and racing a small electric car within a strict 12-hour window. With the Full CAD
+        design and manufacturing process compressed into a single day, the event tested rapid
+      </p>
+
+      <p>
+        The challenge focused on drivetrain optimisation under real-world constraints, including
+        limited power, fixed components, and a competitive scoring system. Performance on the track
+        depended heavily on early engineering decisions rather than post-build iteration.
+      </p>
+
+      <h2>My Role & Contributions</h2>
+
+      <p>
+        I played a key role in the mechanical design and drivetrain decision-making for the car,
+        with a particular focus on selecting an appropriate gear reduction. This involved estimating
+        the final vehicle mass, analysing torque and traction requirements, and balancing acceleration
+        and top speed to suit the expected track conditions.
+      </p>
+
+      <p>
+        The final design used a <strong>1:2.5 gear reduction</strong>, chosen through calculation rather
+        than trial-and-error. As a result, the drivetrain performed as intended from the outset and
+        required no last-minute adjustments during testing or racing.
+      </p>
+
+      <h2>Action & Implementation</h2>
+
+      <ul>
+        <li>
+          Designed and assembled a lightweight chassis using a plywood base, steel axle, and
+          toy car wheels provided by the organisers.
+        </li>
+        <li>
+          Implemented a drivetrain powered by a <strong>Titan 29T DC motor</strong>, transmitting power
+          through custom 3D-printed spur gears.
+        </li>
+        <li>
+          Designed and manufactured custom components including a motor mount, axle coupler,
+          front axle bracket, and circlips to control axial motion.
+        </li>
+        <li>
+          Fabricated custom rear axle brackets by bending and drilling sheet metal to ensure
+          proper alignment and structural stability.
+        </li>
+      </ul>
+      <div class="stl-section">
+        <h3>Full Vehicle Assembly</h3>
+        <p class="stl-caption">
+          Complete CAD assembly showing the drivetrain layout, custom components, and overall vehicle architecture.
+        </p>
+
+        <div class="stl-viewer" id="assembly-viewer" data-gltf="assets/stl/FULL_car_assembly.gltf">
+          <div class="stl-ui-hint">
+            <span>🖱️ Drag to rotate</span>
+            <span>🔍 Scroll to zoom</span>
+          </div>
+        </div>
+      </div>
+
+      <h2>Result & Reflection</h2>
+
+      <p>
+        The completed car performed reliably throughout the race and finished <strong>2nd overall</strong>,
+        achieving a final score of <strong>89.6</strong>. The drivetrain delivered a strong balance between
+        acceleration and speed, validating the initial calculations and design assumptions.
+      </p>
+
+      <p>
+        This project reinforced the importance of deliberate engineering decisions early in the design
+        process. With limited time and no margin for extensive iteration, success depended on getting
+        the fundamentals right from the start.
+      </p>
+      <h2>Video of our Gear Prix Car in Action</h2>
+
+      <p>
+        Watch our car complete the track in a time of 4.2 seconds:
+      </p>
+
+      <div style="display: flex; justify-content: center; margin: 1.5rem 0;">
+        <video controls style="max-width: 100%; width: 600px; height: auto;" autoplay loop muted>
+          <source src="assets/vids/GearPrixVid.mp4" type="video/mp4">
+          Your browser does not support the video tag.
+        </video>
+      </div>
+
+      <p style="margin-top: 1.5rem;">
+        👉 <a
+          href="https://www.linkedin.com/posts/ahmedmishqat_over-the-past-two-days-our-team-took-part-activity-7425312572364464128-3-dd?utm_source=share&utm_medium=member_desktop&rcm=ACoAAEY3AAQBnmXPHGxHlvWh2pEinbwOvD2dEeo"
+          target="_blank" rel="noopener">
+          Read my LinkedIn post on the Gear Prix!
+        </a>
+      </p>
+      <div class="modal-footer">
+        <a href="#" class="close">x</a>
+      </div>
+    </div>
+  </div>
   <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const buttons = document.querySelectorAll(".tab-btn");
-    const panels = document.querySelectorAll(".tab-panel");
+    document.addEventListener("DOMContentLoaded", () => {
+      const buttons = document.querySelectorAll(".tab-btn");
+      const panels = document.querySelectorAll(".tab-panel");
 
-    buttons.forEach(btn => {
-      btn.addEventListener("click", () => {
-        const target = btn.dataset.tab;
+      buttons.forEach(btn => {
+        btn.addEventListener("click", () => {
+          const target = btn.dataset.tab;
 
-        buttons.forEach(b => {
-          const active = b === btn;
-          b.classList.toggle("is-active", active);
-          b.setAttribute("aria-selected", active ? "true" : "false");
+          buttons.forEach(b => {
+            const active = b === btn;
+            b.classList.toggle("is-active", active);
+            b.setAttribute("aria-selected", active ? "true" : "false");
+          });
+
+          panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === target));
         });
-
-        panels.forEach(p => p.classList.toggle("is-active", p.dataset.panel === target));
       });
     });
-  });
-</script>
+  </script>
 
 
   <script type="module" src="assets/js/stl-viewer.js"></script>

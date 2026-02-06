@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	containers.forEach(container => {
-		const stlFromData = container.dataset.stl;
+		const stlFromData = container.dataset.stl || container.dataset.gltf;
 		// fallback: map known ids to defaults (keeps previous behaviour)
 		const fallbackMap = {
 			'chassis-viewer': 'assets/stl/chassis.gltf',
@@ -211,8 +211,19 @@ function initViewer(container, stlPath) {
 				controls.update();
 			}
 
-			// close-in adjustment for chassis/assembly GLTFs (keeps D2 untouched)
-			if ((container.id === 'chassis-viewer' || container.id === 'assembly-viewer' || /chassis\.gltf/i.test(stlPath) || /assembly\.gltf/i.test(stlPath)) && container.id !== 'd2assembly-viewer' && !/D2FULLAssem/i.test(stlPath)) {
+			// Special-case: if this is the FULL_car_assembly, apply appropriate camera distance
+			if (/FULL_car_assembly/i.test(stlPath)) {
+				console.info('GLTF viewer: applying FULL_car_assembly camera adjustment');
+				const carDistance = Math.max(radius * 1.8, 10);
+				camera.position.set(0, Math.max(maxDim * 0.8, radius * 1.0), carDistance);
+				camera.position.multiplyScalar(0.1);
+				camera.lookAt(0, 0, 0);
+				controls.update();
+				console.info(`GLTF viewer: camera set to ${camera.position.x.toFixed(1)}, ${camera.position.y.toFixed(1)}, ${camera.position.z.toFixed(1)}`);
+			}
+
+			// close-in adjustment for chassis/assembly GLTFs (keeps D2 and FULL_car_assembly untouched)
+			if ((container.id === 'chassis-viewer' || container.id === 'assembly-viewer' || /chassis\.gltf/i.test(stlPath) || /assembly\.gltf/i.test(stlPath)) && container.id !== 'd2assembly-viewer' && !/D2FULLAssem/i.test(stlPath) && !/FULL_car_assembly/i.test(stlPath)) {
 				console.info('GLTF viewer: applying close camera adjustment for chassis/assembly');
 				// Compute a stable close camera position based on the model's bounding sphere and max dimension.
 				const closeDistance = Math.max(radius * 1.8, 10);
