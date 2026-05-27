@@ -15,13 +15,167 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
+  <link rel="preload" as="image" href="assets/images/me.webp" type="image/webp">
   <link href="https://cdn.jsdelivr.net/npm/prismjs/themes/prism-tomorrow.min.css" rel="stylesheet">
 
 
 
 </head>
 
+<style id="theme-styles">
+  /* ── Theme toggle ─────────────────────────────────── */
+  .theme-toggle {
+    position: fixed;
+    top: 1.1rem;
+    right: 1.1rem;
+    z-index: 100000;
+    width: 46px;
+    height: 46px;
+    border: none;
+    cursor: pointer;
+    border-radius: 999px;
+    background: rgba(255,255,255,0.60);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.10), 0 8px 24px rgba(0,0,0,0.10);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #333;
+    padding: 0;
+    transition: background 400ms ease, box-shadow 400ms ease, color 400ms ease, transform 200ms ease;
+  }
+  .theme-toggle:hover { transform: scale(1.1); }
+  .icon-sun  { display: none; }
+  .icon-moon { display: block; }
+
+  /* ── Smooth dark mode colour transitions ─────────── */
+  body {
+    transition: background 500ms ease, color 400ms ease;
+  }
+  .project-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease,
+                background 400ms ease, background-color 400ms ease, color 400ms ease;
+  }
+  .tab-btn {
+    transition: transform 0.5s cubic-bezier(0.34,1.56,0.64,1),
+                opacity 0.4s ease, box-shadow 220ms ease,
+                background 400ms ease, background-color 400ms ease, color 400ms ease;
+  }
+  .tab-panel, .pill.primary, .pill.ghost,
+  .modal-content, .link-card, .modal .close {
+    transition-property: background, background-color, color, box-shadow;
+    transition-duration: 400ms;
+    transition-timing-function: ease;
+  }
+
+  /* ── Dark palette ────────────────────────────────── */
+  [data-theme="dark"] body {
+    background: linear-gradient(135deg, #1a0533 0%, #0d0d1a 60%, #120820 100%);
+    color: #f0eaff;
+  }
+  [data-theme="dark"] .hero-text h2  { color: #c9a84c; }
+  [data-theme="dark"] .hero-text p   { color: #c4b8d8; }
+  [data-theme="dark"] .projects h2   { color: #f0eaff; }
+
+  [data-theme="dark"] .project-card {
+    background: rgba(74,26,110,0.38);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.50);
+  }
+  [data-theme="dark"] .project-card h3 { color: #f0eaff; }
+  [data-theme="dark"] .project-card p  { color: #c4b8d8; }
+
+  [data-theme="dark"] .tab-btn         { background: rgba(74,26,110,0.50); color: #f0eaff; }
+  [data-theme="dark"] .tab-btn.is-active { background: rgba(123,45,139,0.88); color: #f0eaff; }
+  [data-theme="dark"] .tab-panel       { background: rgba(26,5,51,0.65);   color: #f0eaff; }
+  [data-theme="dark"] .tab-lead        { color: #d4cde8; }
+  [data-theme="dark"] .tab-fine        { color: #a89cc0; }
+
+  [data-theme="dark"] .pill.primary {
+    background: rgba(123,45,139,0.95);
+    box-shadow: 0 16px 34px rgba(123,45,139,0.35);
+    color: #f0eaff;
+  }
+  [data-theme="dark"] .pill.ghost {
+    background: rgba(74,26,110,0.55);
+    color: #f0eaff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.10), 0 14px 30px rgba(0,0,0,0.30);
+  }
+
+  [data-theme="dark"] .modal-content {
+    background: linear-gradient(135deg, #1e0840, #0d0d1a);
+    color: #f0eaff;
+  }
+  [data-theme="dark"] .modal-content h1,
+  [data-theme="dark"] .modal-content h2,
+  [data-theme="dark"] .modal-content h3 { color: #f0eaff; }
+  [data-theme="dark"] .modal-content p,
+  [data-theme="dark"] .modal-content li { color: #d4cde8; }
+  [data-theme="dark"] .modal-content .project-subtitle { color: #c9a84c; }
+  [data-theme="dark"] .modal-content figcaption { color: #a89cc0; }
+
+  [data-theme="dark"] .link-card {
+    background: rgba(74,26,110,0.45);
+    color: #f0eaff;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.08), 0 12px 25px rgba(0,0,0,0.35);
+  }
+  [data-theme="dark"] .link-card-desc { color: #c4b8d8; }
+  [data-theme="dark"] .link-card-cta  { color: #c9a84c; }
+  [data-theme="dark"] .modal .close   { background: rgba(74,26,110,0.80); color: #f0eaff; }
+  [data-theme="dark"] .stl-viewer     { background: linear-gradient(135deg, #1a0533, #0d0d1a); }
+  [data-theme="dark"] .stl-ui-hint   { background: rgba(26,5,51,0.85); color: #d4cde8; }
+  [data-theme="dark"] .code-block summary { background: rgba(74,26,110,0.55); color: #f0eaff; }
+
+  [data-theme="dark"] .theme-toggle {
+    background: rgba(74,26,110,0.65);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.12), 0 8px 24px rgba(0,0,0,0.40);
+    color: #f0eaff;
+  }
+  [data-theme="dark"] .icon-sun  { display: block; }
+  [data-theme="dark"] .icon-moon { display: none; }
+
+  /* ── Lazy 3D viewer load button ──────────────────── */
+  .stl-lazy-wrap { position: relative; }
+  .stl-load-btn {
+    width: 100%;
+    height: 400px;
+    background: linear-gradient(135deg, #f5f7fa, #e4ebf5);
+    border: none;
+    border-radius: 16px;
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.05), 0 20px 40px rgba(0,0,0,0.10);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.65rem;
+    font-family: inherit;
+    font-size: 0.92rem;
+    font-weight: 600;
+    color: #555;
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 400ms ease, color 400ms ease;
+  }
+  .stl-load-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: inset 0 0 0 1px rgba(0,0,0,0.08), 0 28px 52px rgba(0,0,0,0.14);
+  }
+  [data-theme="dark"] .stl-load-btn {
+    background: linear-gradient(135deg, #1e0840, #0d0d1a);
+    color: #c4b8d8;
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 20px 40px rgba(0,0,0,0.40);
+  }
+  @media (max-width: 700px) { .stl-load-btn { height: 280px; } }
+</style>
+
 <body>
+  <!-- Prevent dark-mode FOUC: apply stored preference before first paint -->
+  <script>(function(){try{if(sessionStorage.getItem('theme')==='dark')document.documentElement.setAttribute('data-theme','dark')}catch(e){}})()</script>
+
+  <button class="theme-toggle" id="theme-toggle" aria-label="Toggle dark mode" title="Toggle dark mode">
+    <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+    <svg class="icon-sun"  xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+  </button>
+
   <section class="hero">
     <div class="hero-text">
       <h1>Ahmed Mishqat</h1>
@@ -37,7 +191,7 @@
       </p>
     </div>
     <div class="hero-image">
-      <img src="assets/images/me.jpg" alt="Portrait of Mishqat">
+      <img src="assets/images/me.webp" alt="Portrait of Mishqat">
     </div>
   </section>
   <section class="pro-tabs">
@@ -98,7 +252,7 @@
 
       <!-- Project 1 -->
       <a href="#project1" class="project-card">
-        <img src="assets/images/project1.jpg" alt="Autonomous Poker Dealer">
+        <img src="assets/images/project1.jpg" alt="Autonomous Poker Dealer" loading="lazy">
         <h3>Robotic Arm Poker Dealer</h3>
         <p>Worked in a team to design a robotic arm to deal poker cards, integrating mechanical design and control
           systems.</p>
@@ -106,7 +260,7 @@
 
       <!-- Project 2 -->
       <a href="#project2" class="project-card">
-        <img src="assets/images/project2.jpg" alt="DMT Gravity Car">
+        <img src="assets/images/project2.jpg" alt="DMT Gravity Car" loading="lazy">
         <h3>DMT Gravity-Propelled Car</h3>
         <p>
           Design, manufacture, and test of a gravity-powered vehicle under
@@ -114,7 +268,7 @@
         </p>
       </a>
       <a href="#project3" class="project-card">
-        <img src="assets/images/project3.jpg" alt="3-Axis CNC Positioning System – Mechanical Design Project">
+        <img src="assets/images/project3.jpg" alt="3-Axis CNC Positioning System – Mechanical Design Project" loading="lazy">
         <h3>3-Axis CNC Positioning System – Mechanical Design Project</h3>
         <p>
           Embodiment & detailed design of a precision CNC motion system under stiffness and performance constraints
@@ -123,27 +277,27 @@
 
       <!-- Project 4 -->
       <a href="#project4" class="project-card">
-        <img src="assets/images/project4.jpg" alt="Project4">
+        <img src="assets/images/project4.jpg" alt="Project4" loading="lazy">
         <h3>Hack-A-Bot: Toxic Waste Disposal Rover Challenge</h3>
         <p>24-hour robotics hackathon</p>
       </a>
       <!-- Project 5 -->
       <a href="#project5" class="project-card">
-        <img src="assets/images/project5.jpg" alt="Project5">
+        <img src="assets/images/project5.jpg" alt="Project5" loading="lazy">
         <h3>Gear-Prix: Drivetrain Design Chanllange</h3>
         <p>12-hour mechanical engineering competition</p>
       </a>
 
       <!-- Project 6 -->
       <a href="#project6" class="project-card">
-        <img src="assets/images/project6_1.jpeg" alt="IMechE pipe climbing robot">
+        <img src="assets/images/project6_1.jpeg" alt="IMechE pipe climbing robot" loading="lazy">
         <h3>IMechE Design Challenge 2026 — NW Regional Winners</h3>
         <p>Autonomous external pipe-climbing robot. Won the North West Regional heat, advancing to nationals.</p>
       </a>
 
       <!-- Project 7 -->
       <a href="#project7" class="project-card">
-        <img src="assets/images/project7_1.jpeg" alt="CrushIt can crusher">
+        <img src="assets/images/project7_1.jpeg" alt="CrushIt can crusher" loading="lazy">
         <h3>IMechE CADathon 2026 — 2nd Place</h3>
         <p>8-hour design sprint. Pedal-powered, gamified aluminium can crusher targeting SDG 11.</p>
       </a>
@@ -312,7 +466,7 @@
         Mechanical Engineering • Design, Manufacture & Test
       </p>
 
-      <img src="assets/images/project2.jpg" alt="DMT Car Assembly">
+      <img src="assets/images/project2.jpg" alt="DMT Car Assembly" loading="lazy">
 
       <h2>Project Context</h2>
 
@@ -391,11 +545,16 @@
           Plywood chassis modelled in CAD and used as the primary mounting
           structure for all drivetrain and support components.
         </p>
-
-        <div class="stl-viewer" id="chassis-viewer" data-stl="assets/stl/chassis.gltf">
-          <div class="stl-ui-hint">
-            <span>🖱️ Drag to rotate</span>
-            <span>🔍 Scroll to zoom</span>
+        <div class="stl-lazy-wrap">
+          <button class="stl-load-btn" type="button" data-target="chassis-lazy" data-src="assets/stl/chassis.gltf">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            Load 3D Model
+          </button>
+          <div class="stl-viewer" id="chassis-lazy" style="display:none;">
+            <div class="stl-ui-hint">
+              <span>🖱️ Drag to rotate</span>
+              <span>🔍 Scroll to zoom</span>
+            </div>
           </div>
         </div>
       </div>
@@ -406,11 +565,16 @@
           Complete vehicle assembly integrating standard bearings, fasteners,
           shafts, and drivetrain components.
         </p>
-
-        <div class="stl-viewer" id="assembly-viewer" data-gltf="assets/stl/assembly.gltf">
-          <div class="stl-ui-hint">
-            <span>🖱️ Drag to rotate</span>
-            <span>🔍 Scroll to zoom</span>
+        <div class="stl-lazy-wrap">
+          <button class="stl-load-btn" type="button" data-target="p2assembly-lazy" data-src="assets/stl/assembly.gltf">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            Load 3D Model
+          </button>
+          <div class="stl-viewer" id="p2assembly-lazy" style="display:none;">
+            <div class="stl-ui-hint">
+              <span>🖱️ Drag to rotate</span>
+              <span>🔍 Scroll to zoom</span>
+            </div>
           </div>
         </div>
       </div>
@@ -518,28 +682,14 @@
           early-stage industrial design work rather than a purely academic exercise.
         </p>
 
-        <h2>Interactive 3D Model<br></h2>
-        <h3>Full Assembly</h3>
-        <p class="stl-caption">
-          Full mechanical assembly showing X-, Y- and Z-axis configuration.
+        <h2>Project Report</h2>
+        <p>
+          The complete design calculations, CAD drawings, component selection justifications, and group reflections
+          are documented in the final report.
         </p>
-        <div class="stl-section">
-          <div class="stl-viewer" id="d2assembly-viewer" data-stl="assets/stl/D2FULLAssem.stl">
-            <div class="stl-ui-hint">
-              <span>🖱️ Drag to rotate</span>
-              <span>🔍 Scroll to zoom</span>
-            </div>
-          </div>
-          <h2>Project Report</h2>
-          <p>
-            The complete design calculations, CAD drawings, component selection justifications, and group reflections
-            are documented in the final report.
-          </p>
-          <p class="pdf-links">
-            <a href="assets/code/Group 28 Design 2 Project Report.pdf" target="_blank">Open PDF</a>
-          </p>
-
-        </div>
+        <p class="pdf-links">
+          <a href="assets/code/Group 28 Design 2 Project Report.pdf" target="_blank">Open PDF</a>
+        </p>
 
 
       </div>
@@ -656,7 +806,7 @@
       </div>
       <h1>Manchester Motorsport Society Gear Prix</h1>
       <p class="project-subtitle">Drivetrain Design Challenge</p>
-      <img src="assets/images/project5_2.jpg" alt="Gear Prix Car ">
+      <img src="assets/images/project5_2.jpg" alt="Gear Prix Car" loading="lazy">
 
       <p>
         This project was a time-constrained mechanical engineering competition organised by
@@ -711,11 +861,16 @@
         <p class="stl-caption">
           Complete CAD assembly showing the drivetrain layout, custom components, and overall vehicle architecture.
         </p>
-
-        <div class="stl-viewer" id="assembly-viewer" data-gltf="assets/stl/FULL_car_assembly.gltf">
-          <div class="stl-ui-hint">
-            <span>🖱️ Drag to rotate</span>
-            <span>🔍 Scroll to zoom</span>
+        <div class="stl-lazy-wrap">
+          <button class="stl-load-btn" type="button" data-target="p5assembly-lazy" data-src="assets/stl/FULL_car_assembly.gltf">
+            <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+            Load 3D Model
+          </button>
+          <div class="stl-viewer" id="p5assembly-lazy" style="display:none;">
+            <div class="stl-ui-hint">
+              <span>🖱️ Drag to rotate</span>
+              <span>🔍 Scroll to zoom</span>
+            </div>
           </div>
         </div>
       </div>
@@ -771,7 +926,7 @@
         Team: Unlimited Rice Pudding · NW Regional Heat Winners → Nationals
       </p>
 
-      <img src="assets/images/project6_1.jpeg" alt="Pipe-climbing robot prototype">
+      <img src="assets/images/project6_1.jpeg" alt="Pipe-climbing robot prototype" loading="lazy">
 
       <h2>The Challenge</h2>
       <p>
@@ -852,8 +1007,8 @@
         Our team poster — received strong positive feedback from the judges and attendees at the regional heat.
       </p>
       <figure style="margin:1.5rem 0;">
-        <img src="assets/images/project6_2.png" alt="IMechE Design Challenge competition poster — Unlimited Rice Pudding"
-             style="max-height:none;width:100%;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,0.22);">
+        <img src="assets/images/project6_2.webp" alt="IMechE Design Challenge competition poster — Unlimited Rice Pudding"
+             loading="lazy" style="max-height:none;width:100%;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,0.22);">
         <figcaption style="margin-top:0.75rem;color:#555;font-size:0.88rem;font-style:italic;text-align:center;">
           NW Regional Heat competition poster, 2026
         </figcaption>
@@ -892,8 +1047,8 @@
         8-Hour Competitive Design Sprint · 2nd Place, Sustainability Category
       </p>
 
-      <img src="assets/images/project7_1.jpeg" alt="CrushIt pedal-powered can crusher">
-      <img src="assets/images/project7_2.jpeg" alt="CrushIt CAD detail">
+      <img src="assets/images/project7_1.jpeg" alt="CrushIt pedal-powered can crusher" loading="lazy">
+      <img src="assets/images/project7_2.jpeg" alt="CrushIt CAD detail" loading="lazy">
 
       <h2>The Brief</h2>
       <p>
@@ -1007,137 +1162,261 @@
   <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
 
-  <!-- Cursor dot cloud effect — self-contained, does not touch existing JS -->
+  <!-- Cursor dot cloud — two-ring organism, self-contained -->
   <script>
   (function () {
     'use strict';
     if (window.matchMedia('(hover: none)').matches) return;
 
-    const COUNT = 8;
-    const mouse = { x: innerWidth / 2, y: innerHeight / 2 };
-    let tick = 0;
+    var INNER = 10, OUTER = 18;
+    var mouse = { x: innerWidth / 2, y: innerHeight / 2 };
+    var tick  = 0;
 
-    const dots = Array.from({ length: COUNT }, (_, i) => {
-      const el = document.createElement('span');
+    function makeDot() {
+      var el = document.createElement('span');
       Object.assign(el.style, {
-        position: 'fixed',
-        top: '0',
-        left: '0',
-        pointerEvents: 'none',
-        borderRadius: '50%',
-        zIndex: '99999',
-        mixBlendMode: 'multiply',
-        willChange: 'transform',
+        position: 'fixed', top: '0', left: '0',
+        pointerEvents: 'none', borderRadius: '50%',
+        zIndex: '99999', mixBlendMode: 'multiply', willChange: 'transform',
       });
       document.body.appendChild(el);
-      return {
-        el,
-        x: innerWidth / 2,
-        y: innerHeight / 2,
-        lag: 0.048 + i * 0.022,
-        baseOrbit: 13 + i * 5,
-        angle: (i / COUNT) * Math.PI * 2,
-        phase: (i / COUNT) * Math.PI * 2,
-      };
-    });
+      return el;
+    }
 
-    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+    var dots = [];
+
+    // Inner ring — tight, fast, responsive
+    for (var i = 0; i < INNER; i++) {
+      dots.push({
+        el: makeDot(), x: mouse.x, y: mouse.y,
+        lag: 0.09 + i * 0.012,
+        baseOrbit: 9 + (i % 3) * 4,
+        angle: (i / INNER) * Math.PI * 2,
+        phase: (i / INNER) * Math.PI * 2,
+        speed: 0.38 + i * 0.020,
+        baseSize: 6.0 - i * 0.28,
+        ring: 'inner',
+      });
+    }
+
+    // Outer ring — wide, slow, independently breathing
+    for (var j = 0; j < OUTER; j++) {
+      dots.push({
+        el: makeDot(), x: mouse.x, y: mouse.y,
+        lag: 0.030 + j * 0.007,
+        baseOrbit: 30 + (j % 5) * 9,
+        angle: (j / OUTER) * Math.PI * 2,
+        phase: (j / OUTER) * Math.PI * 2,
+        speed: 0.14 + j * 0.005,
+        baseSize: 4.2 - j * 0.13,
+        ring: 'outer',
+        opPhase: j * 0.71,  // independent opacity phase per dot
+      });
+    }
+
+    window.addEventListener('mousemove', function(e) { mouse.x = e.clientX; mouse.y = e.clientY; });
 
     (function frame() {
-      tick += 0.014;
-      dots.forEach((d, i) => {
+      tick += 0.013;
+      var dark = document.documentElement.getAttribute('data-theme') === 'dark';
+
+      dots.forEach(function(d, idx) {
         d.x += (mouse.x - d.x) * d.lag;
         d.y += (mouse.y - d.y) * d.lag;
 
-        const breathe = 1 + Math.sin(tick * 1.05 + d.phase) * 0.3;
-        const orbit   = d.baseOrbit + Math.sin(tick * 0.55 + d.phase) * 5;
-        const angle   = d.angle + tick * (0.24 + i * 0.038);
-        const px      = d.x + Math.cos(angle) * orbit;
-        const py      = d.y + Math.sin(angle) * orbit;
-        const size    = Math.max(1.5, (7.5 - i * 0.6) * breathe);
+        var breathe = 1 + Math.sin(tick * 1.05 + d.phase) * 0.26;
+        var orbit   = d.baseOrbit + Math.sin(tick * 0.50 + d.phase) * 4;
+        var angle   = d.angle + tick * d.speed;
+        var px      = d.x + Math.cos(angle) * orbit;
+        var py      = d.y + Math.sin(angle) * orbit;
+        var size    = Math.max(1.2, d.baseSize * breathe);
 
-        /* warm amber → coral, cycling per dot and over time —
-           contrasting against the cool blue-pink page background */
-        const hue   = ((tick * 28 + i * 38) % 58) + 14;
-        const alpha = 0.58 + Math.sin(tick * 0.9 + d.phase) * 0.09;
+        var hue, sat, lig, alpha;
 
-        d.el.style.transform  = `translate(${px - size * 0.5}px,${py - size * 0.5}px)`;
+        if (dark) {
+          // Bright jewel tones on screen blend — gold flares against violet base
+          // mix-blend-mode: screen is additive on dark backgrounds, so these glow
+          var goldPulse = Math.max(0, Math.sin(tick * 0.35 + (d.opPhase || idx * 0.6)) - 0.45) * 2.0;
+          hue = goldPulse > 0.5 ? 44 + goldPulse * 6 : 285 + Math.sin(tick * 0.28 + d.phase) * 28;
+          sat = 85; lig = 68;  // bright enough to show through screen blend
+          alpha = d.ring === 'outer'
+            ? 0.55 + Math.sin(tick * 0.60 + (d.opPhase || 0)) * 0.30
+            : 0.85 + Math.sin(tick * 0.85 + d.phase) * 0.08;
+        } else {
+          // Warm amber → coral, multiply on light background
+          hue   = ((tick * 27 + idx * 37) % 58) + 14;
+          sat   = 80; lig = 60;
+          alpha = d.ring === 'outer'
+            ? 0.28 + Math.sin(tick * 0.58 + (d.opPhase || 0)) * 0.26
+            : 0.60 + Math.sin(tick * 0.88 + d.phase) * 0.08;
+        }
+
+        d.el.style.mixBlendMode = dark ? 'screen' : 'multiply';
+        d.el.style.transform  = 'translate(' + (px - size * 0.5) + 'px,' + (py - size * 0.5) + 'px)';
         d.el.style.width      = size + 'px';
         d.el.style.height     = size + 'px';
-        d.el.style.background = `hsla(${hue},80%,60%,${alpha})`;
+        d.el.style.background = 'hsla(' + hue + ',' + sat + '%,' + lig + '%,' + alpha + ')';
       });
+
       requestAnimationFrame(frame);
     })();
   })();
   </script>
 
-  <!-- Scroll-driven animations — self-contained, does not touch existing JS -->
+  <!-- Scroll-driven animations — self-contained, bidirectional, does not touch existing JS -->
   <script>
   (function () {
     'use strict';
-    const IO = window.IntersectionObserver;
 
-    /* 1 — Hero text recedes gently as the user scrolls away from the top */
-    const heroText = document.querySelector('.hero-text');
-    if (heroText) {
-      heroText.style.willChange = 'transform, opacity';
-      window.addEventListener('scroll', function () {
-        const p = Math.min(window.scrollY / 480, 1);
-        heroText.style.transform = 'scale(' + (1 - p * 0.07) + ')';
-        heroText.style.opacity   = 1 - p * 0.55;
-      }, { passive: true });
+    function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
+    function lerp(a, b, t)    { return a + (b - a) * t; }
+
+    /* ── 1. Hero: inhale → graceful parallax recession, fully reversible ─── */
+    var hero      = document.querySelector('.hero');
+    var heroText  = document.querySelector('.hero-text');
+    var heroImage = document.querySelector('.hero-image');
+
+    if (hero && heroText && heroImage) {
+      heroText.style.willChange  = 'transform, opacity';
+      heroImage.style.willChange = 'transform, opacity';
+      heroText.style.transformOrigin  = '50% 50%';
+      heroImage.style.transformOrigin = '50% 50%';
+
+      function updateHero() {
+        var heroH = hero.offsetHeight || window.innerHeight;
+        var p     = clamp(window.scrollY / heroH, 0, 1);
+
+        // Text: quick inhale peak at p=0.12, then recede and fade
+        var tScale = p < 0.12
+          ? lerp(1.000, 1.055, p / 0.12)
+          : lerp(1.055, 0.880, clamp((p - 0.12) / 0.70, 0, 1));
+        var tAlpha = p < 0.12 ? 1 : lerp(1, 0.02, clamp((p - 0.12) / 0.52, 0, 1));
+        heroText.style.transform = 'scale(' + tScale + ')';
+        heroText.style.opacity   = tAlpha;
+
+        // Image: slower inhale peak at p=0.22, gentler parallax
+        var iScale = p < 0.22
+          ? lerp(1.000, 1.030, p / 0.22)
+          : lerp(1.030, 0.920, clamp((p - 0.22) / 0.65, 0, 1));
+        var iAlpha = p < 0.22 ? 1 : lerp(1, 0.08, clamp((p - 0.22) / 0.50, 0, 1));
+        heroImage.style.transform = 'scale(' + iScale + ')';
+        heroImage.style.opacity   = iAlpha;
+      }
+
+      window.addEventListener('scroll', updateHero, { passive: true });
+      updateHero();
     }
 
-    /* 2 — CV / LinkedIn tab pills inflate into view on scroll */
-    const tabBtns = Array.from(document.querySelectorAll('.tab-btn'));
-    tabBtns.forEach(function (btn) {
-      btn.style.transform  = 'scale(0.8)';
-      btn.style.opacity    = '0';
-      btn.style.transition = 'transform 0.72s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s ease';
+    /* ── 2. Pills: peak at viewport centre, shrink away, fully reversible ── */
+    var tabBtns = Array.from(document.querySelectorAll('.tab-btn'));
+    tabBtns.forEach(function(btn) {
+      btn.style.transform = 'scale(0.70)';
+      btn.style.opacity   = '0.45';
+    });
+
+    var pillRaf = null;
+    function updatePills() {
+      var viewH = window.innerHeight;
+      tabBtns.forEach(function(btn) {
+        var rect  = btn.getBoundingClientRect();
+        var ctr   = rect.top + rect.height / 2;
+        var dist  = Math.abs(ctr - viewH * 0.5);
+        var prox  = clamp(1 - dist / (viewH * 0.52), 0, 1);
+        btn.style.transform = 'scale(' + lerp(0.70, 1.00, prox) + ')';
+        btn.style.opacity   = '' + lerp(0.45, 1.00, prox);
+      });
+      pillRaf = null;
+    }
+    window.addEventListener('scroll', function() {
+      if (!pillRaf) pillRaf = requestAnimationFrame(updatePills);
+    }, { passive: true });
+    updatePills();
+
+    /* ── 3. Cards: staggered entrance, bidirectional exit ───────────────── */
+    var IO    = window.IntersectionObserver;
+    var cards = Array.from(document.querySelectorAll('.project-card'));
+    var BASE_IN  = 'transform 0.65s cubic-bezier(0.22,1,0.36,1), opacity 0.60s ease, background 400ms ease, color 400ms ease';
+    var BASE_OUT = 'transform 0.42s cubic-bezier(0.64,0,0.78,0), opacity 0.38s ease, background 400ms ease, color 400ms ease';
+
+    cards.forEach(function(card) {
+      card.style.opacity    = '0';
+      card.style.transform  = 'translateY(28px)';
+      card.style.transition = BASE_IN;
     });
 
     if (IO) {
-      var pillObs = new IO(function (entries) {
-        entries.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          var idx = tabBtns.indexOf(e.target);
-          setTimeout(function () {
-            e.target.style.transform = 'scale(1)';
-            e.target.style.opacity   = '1';
-          }, idx * 65);
-          pillObs.unobserve(e.target);
+      var cardObs = new IO(function(entries) {
+        entries.forEach(function(e) {
+          var card = e.target;
+          var idx  = cards.indexOf(card);
+          if (e.isIntersecting) {
+            // Entrance — staggered, ease-out
+            setTimeout(function() {
+              card.style.transition = BASE_IN;
+              card.style.transform  = 'translateY(0)';
+              card.style.opacity    = '1';
+            }, idx * 120);
+          } else {
+            // Exit (scroll back up) — no stagger, ease-in
+            card.style.transition = BASE_OUT;
+            card.style.transform  = 'translateY(28px)';
+            card.style.opacity    = '0';
+          }
         });
-      }, { threshold: 0.4 });
-      tabBtns.forEach(function (b) { pillObs.observe(b); });
+      }, { threshold: 0.15 });
+      cards.forEach(function(c) { cardObs.observe(c); });
     } else {
-      tabBtns.forEach(function (b) { b.style.transform = 'scale(1)'; b.style.opacity = '1'; });
+      cards.forEach(function(c) { c.style.transform = 'translateY(0)'; c.style.opacity = '1'; });
     }
 
-    /* 3 — Project cards: staggered fade-up entrance */
-    const cards = Array.from(document.querySelectorAll('.project-card'));
-    cards.forEach(function (card) {
-      card.style.opacity   = '0';
-      card.style.transform = 'translateY(28px)';
+  })();
+  </script>
+
+  <!-- Lazy 3D viewer init — self-contained, does not touch existing JS -->
+  <script>
+  (function () {
+    'use strict';
+    document.querySelectorAll('.stl-load-btn').forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        var targetId  = btn.dataset.target;
+        var src       = btn.dataset.src;
+        var container = document.getElementById(targetId);
+        if (!container || !src) return;
+
+        btn.style.display = 'none';
+        container.style.display = '';
+
+        import('assets/js/stl-viewer.js').then(function (mod) {
+          mod.initViewer(container, src);
+        }).catch(function (err) {
+          console.error('3D viewer load failed:', err);
+          btn.style.display = '';
+          container.style.display = 'none';
+        });
+      });
     });
+  })();
+  </script>
 
-    if (IO) {
-      var cardObs = new IO(function (entries) {
-        entries.forEach(function (e) {
-          if (!e.isIntersecting) return;
-          var idx = cards.indexOf(e.target);
-          setTimeout(function () {
-            e.target.style.transition = 'transform 0.68s cubic-bezier(0.22,1,0.36,1), opacity 0.62s ease';
-            e.target.style.transform  = 'translateY(0)';
-            e.target.style.opacity    = '1';
-          }, idx * 80);
-          cardObs.unobserve(e.target);
-        });
-      }, { threshold: 0.12 });
-      cards.forEach(function (c) { cardObs.observe(c); });
-    } else {
-      cards.forEach(function (c) { c.style.transform = 'translateY(0)'; c.style.opacity = '1'; });
+  <!-- Dark mode toggle — self-contained, persists via sessionStorage -->
+  <script>
+  (function () {
+    'use strict';
+    var btn = document.getElementById('theme-toggle');
+    if (!btn) return;
+
+    function applyTheme(dark) {
+      if (dark) {
+        document.documentElement.setAttribute('data-theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+      }
+      try { sessionStorage.setItem('theme', dark ? 'dark' : 'light'); } catch (e) {}
     }
 
+    btn.addEventListener('click', function () {
+      applyTheme(document.documentElement.getAttribute('data-theme') !== 'dark');
+    });
   })();
   </script>
 

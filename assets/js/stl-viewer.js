@@ -290,3 +290,5 @@ function initViewer(container, stlPath) {
 	}
 	animate();
 }
+
+export { initViewer };
