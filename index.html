@@ -170,6 +170,8 @@
 <body>
   <!-- Prevent dark-mode FOUC: apply stored preference before first paint -->
   <script>(function(){try{if(sessionStorage.getItem('theme')!=='light')document.documentElement.setAttribute('data-theme','dark')}catch(e){}})()</script>
+  <!-- On touch devices, clear any modal hash on load to prevent auto-opening -->
+  <script>(function(){try{var h=window.location.hash;if(h&&/^#(project\d+|cv-modal)/.test(h)&&window.matchMedia('(hover: none)').matches){history.replaceState(null,'',window.location.pathname);}}catch(e){}})()</script>
 
   <canvas id="constellation-bg" style="position:fixed;inset:0;width:100%;height:100%;z-index:-1;pointer-events:none;" aria-hidden="true"></canvas>
 
@@ -1268,81 +1270,89 @@
   (function () {
     'use strict';
 
+    var isTouch = window.matchMedia('(hover: none)').matches;
+    var IO      = window.IntersectionObserver;
+
     function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
     function lerp(a, b, t)    { return a + (b - a) * t; }
 
-    /* ── 1. Hero: starts at scale(1.05) at top, recedes as user scrolls ── */
-    var hero      = document.querySelector('.hero');
-    var heroText  = document.querySelector('.hero-text');
-    var heroImage = document.querySelector('.hero-image');
+    /* ── 1. Hero: scroll recession — desktop only ───────────────────────── */
+    if (!isTouch) {
+      var hero      = document.querySelector('.hero');
+      var heroText  = document.querySelector('.hero-text');
+      var heroImage = document.querySelector('.hero-image');
 
-    if (hero && heroText && heroImage) {
-      heroText.style.willChange  = 'transform, opacity';
-      heroImage.style.willChange = 'transform, opacity';
-      heroText.style.transformOrigin  = '50% 50%';
-      heroImage.style.transformOrigin = '50% 50%';
+      if (hero && heroText && heroImage) {
+        heroText.style.willChange  = 'transform, opacity';
+        heroImage.style.willChange = 'transform, opacity';
+        heroText.style.transformOrigin  = '50% 50%';
+        heroImage.style.transformOrigin = '50% 50%';
 
-      function updateHero() {
-        var heroH = hero.offsetHeight || window.innerHeight;
-        var p     = clamp(window.scrollY / heroH, 0, 1);
+        function updateHero() {
+          var heroH = hero.offsetHeight || window.innerHeight;
+          var p     = clamp(window.scrollY / heroH, 0, 1);
+          heroText.style.transform = 'scale(' + lerp(1.05, 0.85, p) + ')';
+          heroText.style.opacity   = clamp(lerp(1, 0.02, p * 1.5), 0.02, 1);
+          heroImage.style.transform = 'scale(' + lerp(1.05, 0.90, p) + ')';
+          heroImage.style.opacity   = clamp(lerp(1, 0.08, p * 1.2), 0.08, 1);
+        }
 
-        // Text: 1.05 at top, recedes to 0.85, fades to near-invisible
-        heroText.style.transform = 'scale(' + lerp(1.05, 0.85, p) + ')';
-        heroText.style.opacity   = clamp(lerp(1, 0.02, p * 1.5), 0.02, 1);
-
-        // Image: 1.05 at top, recedes to 0.90, fades slightly slower
-        heroImage.style.transform = 'scale(' + lerp(1.05, 0.90, p) + ')';
-        heroImage.style.opacity   = clamp(lerp(1, 0.08, p * 1.2), 0.08, 1);
+        window.addEventListener('scroll', updateHero, { passive: true });
+        updateHero();
       }
-
-      window.addEventListener('scroll', updateHero, { passive: true });
-      updateHero();
     }
 
-    /* ── 2. CV section: continuous scroll-driven scale, cosine falloff ─── */
-    var IO      = window.IntersectionObserver;
-    var proTabs = document.querySelector('.pro-tabs');
+    /* ── 2. CV section: scroll-driven scale — desktop only ──────────────── */
+    if (!isTouch) {
+      var proTabs = document.querySelector('.pro-tabs');
 
-    if (proTabs) {
-      proTabs.style.transformOrigin = '50% 50%';
-      proTabs.style.willChange      = 'transform';
-      // Short transition so it chases scroll smoothly; spring bezier fires on stop
-      proTabs.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      if (proTabs) {
+        proTabs.style.transformOrigin = '50% 50%';
+        proTabs.style.willChange      = 'transform';
+        proTabs.style.transition = 'transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1)';
 
-      var tabsRaf = null;
-      function updateTabs() {
-        var rect    = proTabs.getBoundingClientRect();
-        var ctr     = rect.top + rect.height * 0.5;   // container centre in viewport
-        var viewCtr = window.innerHeight * 0.5;        // viewport centre
-        var dist    = Math.abs(ctr - viewCtr);
-        var falloff = window.innerHeight * 0.65;       // distance at which scale returns to 1.0
-        var t       = clamp(dist / falloff, 0, 1);
-        // cosine bell: 1.0 at t=1 (far), 1.18 at t=0 (centred)
-        var cosVal  = (1 + Math.cos(t * Math.PI)) * 0.5;
-        proTabs.style.transform = 'scale(' + (1.0 + 0.18 * cosVal).toFixed(4) + ')';
-        tabsRaf = null;
+        var tabsRaf = null;
+        function updateTabs() {
+          var rect    = proTabs.getBoundingClientRect();
+          var ctr     = rect.top + rect.height * 0.5;
+          var viewCtr = window.innerHeight * 0.5;
+          var dist    = Math.abs(ctr - viewCtr);
+          var falloff = window.innerHeight * 0.65;
+          var t       = clamp(dist / falloff, 0, 1);
+          var cosVal  = (1 + Math.cos(t * Math.PI)) * 0.5;
+          proTabs.style.transform = 'scale(' + (1.0 + 0.18 * cosVal).toFixed(4) + ')';
+          tabsRaf = null;
+        }
+
+        window.addEventListener('scroll', function () {
+          if (!tabsRaf) tabsRaf = requestAnimationFrame(updateTabs);
+        }, { passive: true });
+        updateTabs();
       }
-
-      window.addEventListener('scroll', function () {
-        if (!tabsRaf) tabsRaf = requestAnimationFrame(updateTabs);
-      }, { passive: true });
-      updateTabs();
     }
 
-    /* ── 3. Cards: entrance top-first, exit bottom-first, both staggered ── */
-    var cards       = Array.from(document.querySelectorAll('.project-card'));
-    var n           = cards.length;
-    var cardVisible = new Array(n).fill(false);
-    var cardTimers  = new Array(n).fill(null);
+    /* ── 3. Cards: staggered on desktop, instant-visible on touch ───────── */
+    var cards = Array.from(document.querySelectorAll('.project-card'));
+    var n     = cards.length;
 
-    var BASE_IN  = 'transform 0.65s cubic-bezier(0.22,1,0.36,1), opacity 0.60s ease, background 400ms ease, color 400ms ease';
-    var BASE_OUT = 'transform 0.42s cubic-bezier(0.64,0,0.78,0), opacity 0.38s ease, background 400ms ease, color 400ms ease';
+    if (isTouch) {
+      // Touch: show cards immediately, no animation
+      cards.forEach(function(card) {
+        card.style.opacity   = '1';
+        card.style.transform = 'none';
+      });
+    } else {
+      var cardVisible = new Array(n).fill(false);
+      var cardTimers  = new Array(n).fill(null);
 
-    cards.forEach(function(card) {
-      card.style.opacity    = '0';
-      card.style.transform  = 'translateY(28px)';
-      card.style.transition = BASE_IN;
-    });
+      var BASE_IN  = 'transform 0.65s cubic-bezier(0.22,1,0.36,1), opacity 0.60s ease, background 400ms ease, color 400ms ease';
+      var BASE_OUT = 'transform 0.42s cubic-bezier(0.64,0,0.78,0), opacity 0.38s ease, background 400ms ease, color 400ms ease';
+
+      cards.forEach(function(card) {
+        card.style.opacity    = '0';
+        card.style.transform  = 'translateY(28px)';
+        card.style.transition = BASE_IN;
+      });
 
     if (IO) {
       var cardObs = new IO(function(entries) {
@@ -1380,6 +1390,8 @@
     } else {
       cards.forEach(function(c) { c.style.transform = 'translateY(0)'; c.style.opacity = '1'; });
     }
+
+    } // end desktop-only else block
 
   })();
   </script>
@@ -1437,6 +1449,8 @@
   (function () {
     'use strict';
 
+    var isMobile = window.matchMedia('(hover: none)').matches;
+
     var canvas = document.getElementById('constellation-bg');
     if (!canvas) return;
     var ctx = canvas.getContext('2d');
@@ -1455,6 +1469,8 @@
           stars[i].y *= sy;
         }
       }
+      // On mobile, redraw once after resize to keep canvas fresh without looping
+      if (isMobile) draw(0);
     }
 
     function isDark() {
@@ -1617,7 +1633,7 @@
         ctx.fill();
       }
 
-      requestAnimationFrame(draw);
+      if (!isMobile) requestAnimationFrame(draw);
     }
 
     // ── Init ──────────────────────────────────────────────────────────────────
@@ -1630,7 +1646,7 @@
       resizeTimer = setTimeout(resize, 80);
     }, { passive: true });
 
-    draw();
+    draw(0);
   })();
   </script>
 
