@@ -59,7 +59,7 @@
 
         <div class="tab-actions">
           <a class="pill primary" href="#cv-modal">Open CV (PDF)</a>
-          <a class="pill ghost" href="assets/cv/AhmedMishqat_CV_EPSRC206.pdf" target="_blank" rel="noopener">
+          <a class="pill ghost" href="assets/cv/CV.pdf" target="_blank" rel="noopener">
             Open in new tab
           </a>
         </div>
@@ -134,7 +134,19 @@
         <p>12-hour mechanical engineering competition</p>
       </a>
 
-      <!-- Add more projects -->
+      <!-- Project 6 -->
+      <a href="#project6" class="project-card">
+        <img src="assets/images/project6_1.jpeg" alt="IMechE pipe climbing robot">
+        <h3>IMechE Design Challenge 2026 — NW Regional Winners</h3>
+        <p>Autonomous external pipe-climbing robot. Won the North West Regional heat, advancing to nationals.</p>
+      </a>
+
+      <!-- Project 7 -->
+      <a href="#project7" class="project-card">
+        <img src="assets/images/project7_1.jpeg" alt="CrushIt can crusher">
+        <h3>IMechE CADathon 2026 — 2nd Place</h3>
+        <p>8-hour design sprint. Pedal-powered, gamified aluminium can crusher targeting SDG 11.</p>
+      </a>
     </div>
   </section>
   <!-- Modals for PDF and LinkedIn -->
@@ -147,12 +159,12 @@
       <h1 class="cv-title">Curriculum Vitae</h1>
 
       <!-- Best overall embed for browsers -->
-      <iframe class="cv-frame" src="assets/cv/AhmedMishqat_CV_EPSRC206.pdf" title="Curriculum Vitae" loading="lazy">
+      <iframe class="cv-frame" src="assets/cv/CV.pdf" title="Curriculum Vitae" loading="lazy">
       </iframe>
 
       <div class="cv-actions">
-        <a class="pill ghost" href="assets/cv/AhmedMishqat_CV_EPSRC206.pdf" target="_blank" rel="noopener">Open in new tab</a>
-        <a class="pill primary" href="assets/cv/AhmedMishqat_CV_EPSRC206.pdf" download>Download</a>
+        <a class="pill ghost" href="assets/cv/CV.pdf" target="_blank" rel="noopener">Open in new tab</a>
+        <a class="pill primary" href="assets/cv/CV.pdf" download>Download</a>
       </div>
     </div>
   </div>
@@ -746,6 +758,229 @@
       </div>
     </div>
   </div>
+  <!-- PROJECT 6: IMechE Design Challenge 2026 -->
+  <div id="project6" class="modal" role="dialog" aria-modal="true" aria-labelledby="project6-title">
+    <a href="#" class="modal-backdrop" aria-hidden="true"></a>
+    <div class="modal-content" role="document" style="max-height:90vh;overflow-y:auto;">
+      <a href="#" class="close" aria-label="Close">&times;</a>
+
+      <h1 id="project6-title">IMechE Design Challenge 2026 — NW Regional Winners</h1>
+      <p class="project-subtitle">Autonomous Robotics · SolidWorks FEA · Arduino · Mechatronics</p>
+
+      <p style="display:inline-block;padding:0.4rem 1rem;border-radius:999px;background:rgba(37,99,235,0.12);color:#1d4ed8;font-weight:700;font-size:0.9rem;margin-bottom:1.5rem;">
+        Team: Unlimited Rice Pudding · NW Regional Heat Winners → Nationals
+      </p>
+
+      <img src="assets/images/project6_1.jpeg" alt="Pipe-climbing robot prototype">
+
+      <h2>The Challenge</h2>
+      <p>
+        The 2026 IMechE Design Challenge tasked teams with designing and building an <strong>autonomous external pipe-climbing robot</strong>
+        capable of navigating vertical industrial pipe structures without human intervention. Our team — Unlimited Rice Pudding —
+        entered the North West Regional heat. We won, and advanced to the national competition.
+      </p>
+
+      <h2>Concept & Architecture</h2>
+      <p>
+        The fundamental problem with pipe-climbing robots is the grip-mobility trade-off: the tighter you clamp to climb,
+        the harder it is to move. From the outset I pushed for a <strong>clamping-and-climbing architecture</strong> —
+        alternating clamp-then-inch sequences, similar to an inchworm — rather than a continuous-drive approach.
+        This gave us more predictable force profiles and let us design the clamping and driving subsystems with well-defined
+        load cases rather than simultaneous demands.
+      </p>
+      <p>
+        The mechanical core is a symmetric clamping jaw system actuated by a dedicated motor, bearing against the pipe
+        to generate the normal force needed for the drive wheels to develop traction. Getting that normal force calculation
+        right early was non-trivial — too little and the robot slips; too much and the drive motor can't overcome the
+        resulting friction on the pipe surface.
+      </p>
+
+      <h2>My Contributions</h2>
+
+      <h3>Mechanical Design & Chassis</h3>
+      <p>
+        I designed the main chassis in SolidWorks: the structural frame, motor mounting points, and a
+        <strong>custom electronics enclosure</strong> that protected the Arduino and power electronics from handling
+        and vibration loads during climbing. The enclosure also served as a tidy mounting surface for wiring —
+        something that matters more than you'd think in a competition demo environment.
+      </p>
+
+      <h3>Topology Optimisation & FEA</h3>
+      <p>
+        On structural components where mass was a direct performance cost — higher mass means greater required clamping force,
+        which drives up motor size — I ran <strong>topology optimisation in SolidWorks Simulation</strong>, followed by FEA
+        validation under expected load cases. This reduced structural component mass by over 30% while keeping stress well
+        within material limits. The numbers held up; nothing cracked under competition conditions.
+      </p>
+
+      <h3>Drive & Clamp Motor Selection</h3>
+      <p>
+        Motor selection was done analytically. I worked through the torque and load calculations for both the drive and
+        clamping motors, accounting for pipe surface friction coefficient, estimated robot weight, required climb rate, and
+        the safety factor that competition conditions demand. These calculations are documented in the power systems report below.
+      </p>
+
+      <h3>Arduino Control Architecture & Dead-Reckoning</h3>
+      <p>
+        The original plan used an HC-SR04 ultrasonic sensor for positional feedback during climbing. In testing, the sensor
+        proved unreliable at the distances and geometries involved — reflections from the cylindrical pipe surface scattered
+        the return signal and gave inconsistent readings at range.
+      </p>
+      <p>
+        Rather than spend competition preparation time debugging sensor physics, I <strong>redesigned the control architecture
+        around dead-reckoning using motor pulse timing</strong>. By counting encoder-equivalent pulses and correlating them
+        to measured wheel travel, we achieved positioning accuracy competitive with what the sensor was supposed to deliver —
+        arguably more repeatable, since it removed an environmental variable entirely. The lesson: when a sensor behaves
+        unexpectedly, consider whether the sensor is actually necessary.
+      </p>
+
+      <h2>Reflection</h2>
+      <p>
+        Winning the NW regional heat was satisfying, but what I took from this project more than the result was the value of
+        <strong>committing to an architecture early</strong>. Once we settled on clamping-and-climbing instead of
+        continuous-drive, every subsequent decision — motor sizing, control logic, structural layout — became significantly
+        cleaner. Ambiguity in the concept phase propagates into everything downstream.
+      </p>
+      <p>
+        The dead-reckoning pivot was a good reminder that the "proper" solution isn't always the most robust one.
+        Engineering in a competition context has to account for the fact that you'll be demonstrating in conditions
+        you can't fully control. Removing the sensor dependency made the system more deterministic, not less capable.
+      </p>
+
+      <h2>Competition Poster</h2>
+      <p style="color:#555;font-size:0.95rem;margin-bottom:1rem;">
+        Our team poster — received strong positive feedback from the judges and attendees at the regional heat.
+      </p>
+      <figure style="margin:1.5rem 0;">
+        <img src="assets/images/project6_2.png" alt="IMechE Design Challenge competition poster — Unlimited Rice Pudding"
+             style="max-height:none;width:100%;border-radius:16px;box-shadow:0 24px 60px rgba(0,0,0,0.22);">
+        <figcaption style="margin-top:0.75rem;color:#555;font-size:0.88rem;font-style:italic;text-align:center;">
+          NW Regional Heat competition poster, 2026
+        </figcaption>
+      </figure>
+
+      <h2>Documents</h2>
+      <div class="link-cards">
+        <a class="link-card" href="assets/files/project6_presentation.pdf" target="_blank" rel="noopener">
+          <div class="link-card-title">Technical Presentation</div>
+          <div class="link-card-desc">Slides delivered at the NW Regional heat — concept, design, and validation.</div>
+          <div class="link-card-cta">Open PDF →</div>
+        </a>
+        <a class="link-card" href="assets/files/project6_calc.pdf" target="_blank" rel="noopener">
+          <div class="link-card-title">Power Systems Calculations</div>
+          <div class="link-card-desc">Analytical torque and load analysis used for drive and clamping motor selection.</div>
+          <div class="link-card-cta">Open PDF →</div>
+        </a>
+      </div>
+
+      <div class="modal-footer">
+        <a href="#" class="close">×</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PROJECT 7: IMechE CADathon 2026 -->
+  <div id="project7" class="modal" role="dialog" aria-modal="true" aria-labelledby="project7-title">
+    <a href="#" class="modal-backdrop" aria-hidden="true"></a>
+    <div class="modal-content" role="document" style="max-height:90vh;overflow-y:auto;">
+      <a href="#" class="close" aria-label="Close">&times;</a>
+
+      <h1 id="project7-title">IMechE CADathon 2026 — 2nd Place, Sustainability Category</h1>
+      <p class="project-subtitle">SolidWorks · Mechanical Design · Design Sprint · SDG 11</p>
+
+      <p style="display:inline-block;padding:0.4rem 1rem;border-radius:999px;background:rgba(21,128,61,0.12);color:#166534;font-weight:700;font-size:0.9rem;margin-bottom:1.5rem;">
+        8-Hour Competitive Design Sprint · 2nd Place, Sustainability Category
+      </p>
+
+      <img src="assets/images/project7_1.jpeg" alt="CrushIt pedal-powered can crusher">
+      <img src="assets/images/project7_2.jpeg" alt="CrushIt CAD detail">
+
+      <h2>The Brief</h2>
+      <p>
+        The IMechE CADathon is an 8-hour competitive design sprint where teams receive a brief on the day and must design,
+        model, and present a complete engineering solution within the window. Our 2026 brief centred on
+        <strong>SDG 11 — Sustainable Cities and Communities</strong>. No prior preparation, no pre-built models.
+        Everything from concept to CAD to presentation in eight hours.
+      </p>
+
+      <h2>The Problem We Chose to Solve</h2>
+      <p>
+        Aluminium cans are one of the most recyclable materials on earth — yet at high-footfall events like festivals,
+        sports venues, and public spaces, recycling rates are consistently poor. The standard explanation is apathy.
+        We disagreed with that framing.
+      </p>
+      <p>
+        Our analysis was simpler: <strong>passive infrastructure makes recycling the inconvenient choice</strong>. Bins are
+        identical. There's no feedback, no engagement, no reason to prefer the recycling option over the bin nearest to you.
+        If recycling were the <em>fun</em> choice, behaviour would follow. That became the brief we gave ourselves.
+      </p>
+
+      <h2>CrushIt — The Concept</h2>
+      <p>
+        CrushIt is a <strong>pedal-powered, gamified aluminium can crusher</strong> designed for deployment at high-footfall
+        public events. The user steps on a foot pedal, the can crushes, a mechanical counter increments. Two units sit
+        side-by-side, each representing a team — the demo concept being a Messi vs Ronaldo rivalry. Live crush counts are
+        displayed on each side. Recycling becomes a competitive game.
+      </p>
+      <p>
+        The judging panel specifically cited the gamified dual-sided engagement mechanic as the key differentiator in our score.
+        That was gratifying — it was the first idea I put on paper when the brief dropped.
+      </p>
+
+      <h2>Mechanical Design</h2>
+      <p>The entire machine is <strong>fully passive — zero electricity</strong>. Everything is mechanical:</p>
+      <ul style="margin:0.75rem 0 1rem 1.5rem;line-height:1.9;">
+        <li><strong>Foot-pedal toggle linkage</strong> — delivers crushing force through a mechanical advantage linkage, returning to the ready position under spring tension.</li>
+        <li><strong>Upper spike platform</strong> — pre-punctures the can at the top before the main crush begins, safely releasing pressurised carbonation before the can deforms. A sealed, suddenly-crushed can can behave unpredictably; this removes that risk.</li>
+        <li><strong>Grid lower platform with liquid drainage tray</strong> — open-grid geometry lets residual liquid drain passively, keeping the mechanism and floor clean.</li>
+        <li><strong>Inclined exit floor</strong> — crushed cans roll to one side automatically, clearing the crushing zone for the next can without user intervention.</li>
+        <li><strong>Mechanical safety lid interlock</strong> — the crushing sequence can only initiate when the lid is correctly closed, preventing hand injuries. Fully mechanical — no electronics, no software failure modes.</li>
+      </ul>
+
+      <h2>My Contributions</h2>
+      <p>
+        I originated the CrushIt concept and identified the framing problem — that poor recycling at events is an infrastructure
+        and engagement problem, not an apathy problem. The gamification mechanic (dual-sided competitive engagement, live counter)
+        was my core design contribution, and the one the judges called out specifically.
+      </p>
+      <p>
+        Beyond concept, I led all SolidWorks CAD modelling across the eight hours and built the final presentation deck within
+        the same window. In a time-constrained format, the ability to CAD and communicate simultaneously is where competitions
+        are won or lost.
+      </p>
+
+      <h2>Reflection</h2>
+      <p>
+        Second place in a sustainability design sprint in eight hours is a decent result. But what I took from it was less
+        about the placement and more about design process under genuine time pressure.
+      </p>
+      <p>
+        The instinct under time pressure is to jump to solutions — to start modelling before you've understood the problem.
+        Teams that do that tend to produce technically competent designs that don't land with judges, because the problem
+        framing is soft. Spending the first thirty minutes challenging the brief's implicit assumptions (why is recycling low?
+        is it actually apathy?) produced a sharper concept than we'd have gotten by immediately going to CAD.
+      </p>
+      <p>
+        The all-mechanical, zero-electricity constraint was a deliberate choice, not a limitation. It meant the design had no
+        power dependency, no software failure modes, and was immediately manufacturable from standard materials. Simplicity
+        in mechanical design is underrated.
+      </p>
+
+      <h2>Design Sprint Presentation</h2>
+      <div class="link-cards">
+        <a class="link-card" href="assets/files/project7_presentation.pdf" target="_blank" rel="noopener">
+          <div class="link-card-title">CADathon Presentation</div>
+          <div class="link-card-desc">Full presentation deck — concept, CAD renders, mechanical drawings, and SDG 11 impact justification.</div>
+          <div class="link-card-cta">Open PDF →</div>
+        </a>
+      </div>
+
+      <div class="modal-footer">
+        <a href="#" class="close">×</a>
+      </div>
+    </div>
+  </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const buttons = document.querySelectorAll(".tab-btn");
@@ -771,8 +1006,140 @@
   <script type="module" src="assets/js/stl-viewer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
-  <script src="assets/neko/oneko.js" data-cat="assets/neko/oneko.gif"></script>
 
+  <!-- Cursor dot cloud effect — self-contained, does not touch existing JS -->
+  <script>
+  (function () {
+    'use strict';
+    if (window.matchMedia('(hover: none)').matches) return;
+
+    const COUNT = 8;
+    const mouse = { x: innerWidth / 2, y: innerHeight / 2 };
+    let tick = 0;
+
+    const dots = Array.from({ length: COUNT }, (_, i) => {
+      const el = document.createElement('span');
+      Object.assign(el.style, {
+        position: 'fixed',
+        top: '0',
+        left: '0',
+        pointerEvents: 'none',
+        borderRadius: '50%',
+        zIndex: '99999',
+        mixBlendMode: 'multiply',
+        willChange: 'transform',
+      });
+      document.body.appendChild(el);
+      return {
+        el,
+        x: innerWidth / 2,
+        y: innerHeight / 2,
+        lag: 0.048 + i * 0.022,
+        baseOrbit: 13 + i * 5,
+        angle: (i / COUNT) * Math.PI * 2,
+        phase: (i / COUNT) * Math.PI * 2,
+      };
+    });
+
+    window.addEventListener('mousemove', e => { mouse.x = e.clientX; mouse.y = e.clientY; });
+
+    (function frame() {
+      tick += 0.014;
+      dots.forEach((d, i) => {
+        d.x += (mouse.x - d.x) * d.lag;
+        d.y += (mouse.y - d.y) * d.lag;
+
+        const breathe = 1 + Math.sin(tick * 1.05 + d.phase) * 0.3;
+        const orbit   = d.baseOrbit + Math.sin(tick * 0.55 + d.phase) * 5;
+        const angle   = d.angle + tick * (0.24 + i * 0.038);
+        const px      = d.x + Math.cos(angle) * orbit;
+        const py      = d.y + Math.sin(angle) * orbit;
+        const size    = Math.max(1.5, (7.5 - i * 0.6) * breathe);
+
+        /* warm amber → coral, cycling per dot and over time —
+           contrasting against the cool blue-pink page background */
+        const hue   = ((tick * 28 + i * 38) % 58) + 14;
+        const alpha = 0.58 + Math.sin(tick * 0.9 + d.phase) * 0.09;
+
+        d.el.style.transform  = `translate(${px - size * 0.5}px,${py - size * 0.5}px)`;
+        d.el.style.width      = size + 'px';
+        d.el.style.height     = size + 'px';
+        d.el.style.background = `hsla(${hue},80%,60%,${alpha})`;
+      });
+      requestAnimationFrame(frame);
+    })();
+  })();
+  </script>
+
+  <!-- Scroll-driven animations — self-contained, does not touch existing JS -->
+  <script>
+  (function () {
+    'use strict';
+    const IO = window.IntersectionObserver;
+
+    /* 1 — Hero text recedes gently as the user scrolls away from the top */
+    const heroText = document.querySelector('.hero-text');
+    if (heroText) {
+      heroText.style.willChange = 'transform, opacity';
+      window.addEventListener('scroll', function () {
+        const p = Math.min(window.scrollY / 480, 1);
+        heroText.style.transform = 'scale(' + (1 - p * 0.07) + ')';
+        heroText.style.opacity   = 1 - p * 0.55;
+      }, { passive: true });
+    }
+
+    /* 2 — CV / LinkedIn tab pills inflate into view on scroll */
+    const tabBtns = Array.from(document.querySelectorAll('.tab-btn'));
+    tabBtns.forEach(function (btn) {
+      btn.style.transform  = 'scale(0.8)';
+      btn.style.opacity    = '0';
+      btn.style.transition = 'transform 0.72s cubic-bezier(0.34,1.56,0.64,1), opacity 0.5s ease';
+    });
+
+    if (IO) {
+      var pillObs = new IO(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var idx = tabBtns.indexOf(e.target);
+          setTimeout(function () {
+            e.target.style.transform = 'scale(1)';
+            e.target.style.opacity   = '1';
+          }, idx * 65);
+          pillObs.unobserve(e.target);
+        });
+      }, { threshold: 0.4 });
+      tabBtns.forEach(function (b) { pillObs.observe(b); });
+    } else {
+      tabBtns.forEach(function (b) { b.style.transform = 'scale(1)'; b.style.opacity = '1'; });
+    }
+
+    /* 3 — Project cards: staggered fade-up entrance */
+    const cards = Array.from(document.querySelectorAll('.project-card'));
+    cards.forEach(function (card) {
+      card.style.opacity   = '0';
+      card.style.transform = 'translateY(28px)';
+    });
+
+    if (IO) {
+      var cardObs = new IO(function (entries) {
+        entries.forEach(function (e) {
+          if (!e.isIntersecting) return;
+          var idx = cards.indexOf(e.target);
+          setTimeout(function () {
+            e.target.style.transition = 'transform 0.68s cubic-bezier(0.22,1,0.36,1), opacity 0.62s ease';
+            e.target.style.transform  = 'translateY(0)';
+            e.target.style.opacity    = '1';
+          }, idx * 80);
+          cardObs.unobserve(e.target);
+        });
+      }, { threshold: 0.12 });
+      cards.forEach(function (c) { cardObs.observe(c); });
+    } else {
+      cards.forEach(function (c) { c.style.transform = 'translateY(0)'; c.style.opacity = '1'; });
+    }
+
+  })();
+  </script>
 
 </body>
 
