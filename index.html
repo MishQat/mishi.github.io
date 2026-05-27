@@ -286,7 +286,7 @@
       <!-- Project 5 -->
       <a href="#project5" class="project-card">
         <img src="assets/images/project5.jpg" alt="Project5" loading="lazy">
-        <h3>Gear-Prix: Drivetrain Design Chanllange</h3>
+        <h3>Gear-Prix: Drivetrain Design Challenge</h3>
         <p>12-hour mechanical engineering competition</p>
       </a>
 
@@ -1160,7 +1160,6 @@
   </script>
 
 
-  <script type="module" src="assets/js/stl-viewer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs/prism.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/prismjs/components/prism-python.min.js"></script>
 
@@ -1397,20 +1396,20 @@
   </script>
 
   <!-- Lazy 3D viewer init — self-contained, does not touch existing JS -->
-  <script>
-  (function () {
-    'use strict';
-    document.querySelectorAll('.stl-load-btn').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        var targetId  = btn.dataset.target;
-        var src       = btn.dataset.src;
-        var container = document.getElementById(targetId);
-        if (!container || !src) return;
+  <script type="module">
+  document.querySelectorAll('.stl-load-btn').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var targetId  = btn.dataset.target;
+      var src       = btn.dataset.src;
+      var container = document.getElementById(targetId);
+      if (!container || !src) return;
 
-        btn.style.display = 'none';
-        container.style.display = '';
+      btn.style.display = 'none';
+      container.style.display = '';
 
-        import('assets/js/stl-viewer.js').then(function (mod) {
+      // One rAF so the browser lays out the container before Three.js measures it
+      requestAnimationFrame(function () {
+        import('./assets/js/stl-viewer.js').then(function (mod) {
           mod.initViewer(container, src);
         }).catch(function (err) {
           console.error('3D viewer load failed:', err);
@@ -1419,7 +1418,7 @@
         });
       });
     });
-  })();
+  });
   </script>
 
   <!-- Dark mode toggle — self-contained, persists via sessionStorage -->
