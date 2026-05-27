@@ -66,7 +66,7 @@ body {
 .project-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 2.5rem;
+  gap: 1.25rem;
 }
 
 .project-card {
@@ -90,7 +90,7 @@ body {
 
 .project-card h3 {
   font-size: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.9rem;
 }
 
 .project-card p {
